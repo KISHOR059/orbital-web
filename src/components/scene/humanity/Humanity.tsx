@@ -1,6 +1,5 @@
 import { CityMarkers } from './CityMarkers'
-import { ConnectionArcs } from './ConnectionArcs'
-import { DataPulses } from './DataPulses'
+import { ConnectionNetwork } from './ConnectionNetwork'
 
 export interface HumanityProps {
   radius?: number
@@ -12,11 +11,8 @@ export function Humanity({ radius = 2.008 }: HumanityProps) {
       {/* 1. Subtle Global City Light Markers */}
       <CityMarkers radius={radius} />
 
-      {/* 2. Thin Inter-Continental Connection Arcs */}
-      <ConnectionArcs radius={radius} />
-
-      {/* 3. Traveling Data Packets on Connection Network */}
-      <DataPulses radius={radius} />
+      {/* 2. Elevated Great-Circle Routes with Data Signals and Destination Pulses */}
+      <ConnectionNetwork radius={radius} />
     </group>
   )
 }
