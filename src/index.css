@@ -69,3 +69,19 @@ canvas {
   max-width: 100%;
 }
 
+.app-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.scene-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+}
+
+
