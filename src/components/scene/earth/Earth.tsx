@@ -25,10 +25,10 @@ export function Earth() {
         <EarthSurface />
 
         {/* Independent Dynamic Cloud Layer */}
-        <EarthClouds radius={2.012} />
+        <EarthClouds radius={2.004} />
 
         {/* Cinematic Atmospheric Rayleigh Glow */}
-        <EarthAtmosphere radius={2.025} />
+        <EarthAtmosphere radius={2.008} />
       </group>
     </group>
   )

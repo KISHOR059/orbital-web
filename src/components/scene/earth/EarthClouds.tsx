@@ -3,7 +3,7 @@ import { useFrame } from '@react-three/fiber'
 import { useTexture } from '@react-three/drei'
 import * as THREE from 'three'
 
-export function EarthClouds({ radius = 2.02 }: { radius?: number }) {
+export function EarthClouds({ radius = 2.004 }: { radius?: number }) {
   const cloudsRef = useRef<THREE.Mesh>(null!)
   const cloudsMap = useTexture('/textures/earth/earth_clouds.jpg')
 

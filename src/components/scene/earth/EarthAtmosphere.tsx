@@ -9,10 +9,8 @@ const AtmosphereShader = {
     varying vec3 vWorldNormal;
 
     void main() {
-      // View-space normal and world-space normal
       vNormal = normalize(normalMatrix * normal);
       vWorldNormal = normalize((modelMatrix * vec4(normal, 0.0)).xyz);
-
       vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
       vViewPosition = mvPosition.xyz;
       gl_Position = projectionMatrix * mvPosition;
@@ -31,28 +29,32 @@ const AtmosphereShader = {
     void main() {
       vec3 viewDir = normalize(-vViewPosition);
       vec3 normal = normalize(vNormal);
+      vec3 worldNormal = normalize(vWorldNormal);
+      vec3 sunDir = normalize(uSunPosition);
 
-      // 1. Fresnel / Rim calculation (0 on center crust, 1 at outer planetary limb)
+      // 1. Fresnel / Rim falloff (steep power curve: 0 across Earth disc, active only at glancing limb)
       float NdotV = clamp(dot(normal, viewDir), 0.0, 1.0);
-      float rim = pow(1.0 - NdotV, uPower);
+      float fresnel = pow(1.0 - NdotV, uPower);
 
-      // 2. Sunlight alignment in world space
-      vec3 sunDirWorld = normalize(uSunPosition);
-      float sunDot = dot(normalize(vWorldNormal), sunDirWorld);
+      // 2. Sunlight alignment (strictly 0.0 on shadow/night hemisphere)
+      float sunDot = dot(worldNormal, sunDir);
+      float sunLight = max(0.0, sunDot);
+      float nightCutoff = smoothstep(0.0, 0.3, sunDot);
 
-      // Soft sunlit modulation: Bright along illuminated limb, 0 on dark side
-      float sunFactor = smoothstep(-0.08, 0.38, sunDot);
+      // 3. Rayleigh forward/side scattering phase function
+      float cosTheta = dot(viewDir, sunDir);
+      float rayleighPhase = 0.75 * (1.0 + 0.5 * cosTheta * cosTheta);
 
-      // 3. Natural Rayleigh color grading (restrained blue to soft blue-white on sunlit limb)
-      vec3 atmosphereColor = mix(uAtmosphereColor, uSunlitColor, clamp(sunDot * 0.75 + 0.25, 0.0, 1.0));
+      // 4. Combined atmospheric scattering intensity (zero emission, purely scattered light)
+      float scattering = fresnel * sunLight * nightCutoff * rayleighPhase * uIntensity;
 
-      // 4. Calculate final atmospheric radiance
-      float alpha = rim * sunFactor * uIntensity;
-      alpha = smoothstep(0.0, 0.9, alpha);
+      // 5. Restrained natural color blend
+      vec3 color = mix(uAtmosphereColor, uSunlitColor, clamp(sunDot * 0.7 + 0.3, 0.0, 1.0));
 
-      if (alpha < 0.001) discard;
+      float alpha = clamp(scattering, 0.0, 1.0);
+      if (alpha < 0.002) discard;
 
-      gl_FragColor = vec4(atmosphereColor * alpha, alpha);
+      gl_FragColor = vec4(color * alpha, alpha);
     }
   `,
 }
@@ -63,7 +65,7 @@ export interface EarthAtmosphereProps {
 }
 
 export function EarthAtmosphere({
-  radius = 2.03,
+  radius = 2.008,
   sunPosition = new THREE.Vector3(6, 2.5, 4.5),
 }: EarthAtmosphereProps) {
   const materialRef = useRef<THREE.ShaderMaterial>(null!)
@@ -71,10 +73,10 @@ export function EarthAtmosphere({
   const uniforms = useMemo(
     () => ({
       uSunPosition: { value: sunPosition },
-      uAtmosphereColor: { value: new THREE.Color('#4ba3e3') }, // Subtle Rayleigh blue
-      uSunlitColor: { value: new THREE.Color('#d4efff') },     // Soft blue-white illuminated limb
-      uIntensity: { value: 0.95 },
-      uPower: { value: 4.2 },
+      uAtmosphereColor: { value: new THREE.Color('#3b82f6') }, // Restrained Rayleigh space blue
+      uSunlitColor: { value: new THREE.Color('#e0f2fe') },     // Soft daylight white-cyan limb
+      uIntensity: { value: 0.75 },
+      uPower: { value: 6.5 },                                  // High exponent = razor-thin haze
     }),
     [sunPosition]
   )
