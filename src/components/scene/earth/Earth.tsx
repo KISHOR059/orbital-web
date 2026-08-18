@@ -1,11 +1,15 @@
-import { useMemo, useRef } from 'react'
+import { useLayoutEffect, useMemo, useRef } from 'react'
 import { useFrame, type ThreeEvent } from '@react-three/fiber'
 import * as THREE from 'three'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { EarthSurface } from './EarthSurface'
 import { EarthClouds } from './EarthClouds'
 import { EarthAtmosphere } from './EarthAtmosphere'
 import { EarthInterior } from '../earth-interior/EarthInterior'
 import { Humanity } from '../humanity/Humanity'
+
+gsap.registerPlugin(ScrollTrigger)
 
 export interface EarthProps {
   scrollTriggerElement?: HTMLElement | string | null
@@ -20,6 +24,9 @@ export function Earth({ scrollTriggerElement }: EarthProps) {
   // Earth's natural axial tilt (~23.44 degrees)
   const axialTilt = THREE.MathUtils.degToRad(23.44)
 
+  // Track if we are currently in the Earth Interior scroll window
+  const isInteriorActive = useRef(false)
+
   // Drag interaction state refs (zero React re-renders)
   const isDragging = useRef(false)
   const lastPointer = useRef({ x: 0, y: 0 })
@@ -29,6 +36,25 @@ export function Earth({ scrollTriggerElement }: EarthProps) {
 
   // Vertical tilt constraints (+/- 30 degrees)
   const maxPitch = THREE.MathUtils.degToRad(30)
+
+  useLayoutEffect(() => {
+    const trigger = scrollTriggerElement || '#scroll-track'
+
+    const st = ScrollTrigger.create({
+      trigger: trigger,
+      start: 'top top',
+      end: 'bottom bottom',
+      onUpdate: (self) => {
+        const p = self.progress
+        // Earth Interior is active between progress 0.30 and 0.68
+        isInteriorActive.current = p >= 0.30 && p <= 0.68
+      },
+    })
+
+    return () => {
+      st.kill()
+    }
+  }, [scrollTriggerElement])
 
   // Organic, frame-rate independent celestial rotation with long-period micro-variation
   useFrame(({ clock }, delta) => {
@@ -71,8 +97,11 @@ export function Earth({ scrollTriggerElement }: EarthProps) {
     userRotationGroupRef.current.rotation.y = currentRotation.current.y
   })
 
-  // Pointer Event Handlers for Left-Click Drag Interaction (Normal browser cursor preserved)
+  // Pointer Event Handlers for Left-Click Drag Interaction on Exterior Earth
   const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
+    // If Interior phase is active, do NOT intercept or stop propagation; let EarthInterior handle it
+    if (isInteriorActive.current) return
+
     // Only accept desktop left mouse button (e.button === 0 and pointerType === 'mouse')
     if (e.pointerType !== 'mouse' || e.button !== 0) return
 
@@ -130,16 +159,15 @@ export function Earth({ scrollTriggerElement }: EarthProps) {
         {/* Subtle Signs of Human Civilization & Cities */}
         <Humanity radius={2.008} scrollTriggerElement={scrollTriggerElement} />
 
-        {/* Interactive Desktop Drag Hit Sphere */}
+        {/* Interactive Desktop Drag Hit Sphere for Exterior Earth */}
         <mesh
-          visible={false}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerUp}
         >
           <sphereGeometry args={[2.08, 32, 32]} />
-          <meshBasicMaterial transparent opacity={0} />
+          <meshBasicMaterial transparent opacity={0} depthWrite={false} />
         </mesh>
       </group>
     </group>

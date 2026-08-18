@@ -127,7 +127,7 @@ export function EarthInterior({ scrollTriggerElement }: EarthInteriorProps) {
         velocity.current.y *= 0.92
       }
 
-      // Clamp vertical pitch within safe geological limits
+      // Clamp vertical pitch within safe geological limits (+/- 30 deg)
       targetRotation.current.x = THREE.MathUtils.clamp(
         targetRotation.current.x,
         -maxPitch,
@@ -183,7 +183,7 @@ export function EarthInterior({ scrollTriggerElement }: EarthInteriorProps) {
   // Pointer Event Handlers for Left-Click Drag on Earth Interior
   const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
     // Only accept desktop left mouse button when Earth Interior is actively visible
-    if (e.pointerType !== 'mouse' || e.button !== 0 || overallVisibility.current < 0.15) return
+    if (e.pointerType !== 'mouse' || e.button !== 0 || overallVisibility.current < 0.1) return
 
     e.stopPropagation()
     isDragging.current = true
@@ -224,7 +224,13 @@ export function EarthInterior({ scrollTriggerElement }: EarthInteriorProps) {
   return (
     <group ref={interiorGroupRef} name="earth-interior-cutaway">
       {/* Parent rotation group rotating all concentric layers together */}
-      <group ref={interiorRotationGroupRef}>
+      <group
+        ref={interiorRotationGroupRef}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+      >
         {/* 1. Concentric Core (Bright warm orange / golden yellow with radiant emission) */}
         <mesh ref={coreMeshRef} geometry={coreGeom}>
           <meshStandardMaterial
@@ -298,16 +304,10 @@ export function EarthInterior({ scrollTriggerElement }: EarthInteriorProps) {
           </mesh>
         </group>
 
-        {/* Interactive Desktop Drag Hit Sphere for Earth Interior */}
-        <mesh
-          visible={false}
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-          onPointerCancel={handlePointerUp}
-        >
+        {/* Interactive Desktop Drag Hit Sphere for Earth Interior (Raycastable, transparent) */}
+        <mesh>
           <sphereGeometry args={[2.05, 32, 32]} />
-          <meshBasicMaterial transparent opacity={0} />
+          <meshBasicMaterial transparent opacity={0} depthWrite={false} />
         </mesh>
       </group>
     </group>
