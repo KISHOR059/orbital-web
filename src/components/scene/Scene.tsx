@@ -1,4 +1,4 @@
-import { Suspense } from 'react'
+import { Suspense, useMemo } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Stars } from '@react-three/drei'
 import { Earth } from './earth/Earth'
@@ -6,17 +6,21 @@ import { TechnologySpace } from './technology/TechnologySpace'
 import { IdentityObject } from './identity/IdentityObject'
 import { CameraRig } from './camera/CameraRig'
 
-
-
 export interface SceneProps {
   scrollTriggerElement?: HTMLElement | string | null
 }
 
 export function Scene({ scrollTriggerElement }: SceneProps) {
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+
+  const dprConfig: [number, number] = useMemo(() => {
+    return isMobile ? [1, 1.5] : [1, 2]
+  }, [isMobile])
+
   return (
     <div className="scene-container">
       <Canvas
-        dpr={[1, 2]}
+        dpr={dprConfig}
         gl={{
           antialias: true,
           powerPreference: 'high-performance',
@@ -45,11 +49,11 @@ export function Scene({ scrollTriggerElement }: SceneProps) {
           color="#60a5fa"
         />
 
-        {/* Multi-depth cosmic starfields */}
+        {/* Multi-depth cosmic starfields (adaptive count for mobile battery/GPU) */}
         <Stars
           radius={200}
           depth={80}
-          count={3500}
+          count={isMobile ? 1200 : 3500}
           factor={3}
           saturation={0}
           fade
@@ -58,7 +62,7 @@ export function Scene({ scrollTriggerElement }: SceneProps) {
         <Stars
           radius={100}
           depth={50}
-          count={1000}
+          count={isMobile ? 400 : 1000}
           factor={4.5}
           saturation={0.4}
           fade
@@ -83,6 +87,3 @@ export function Scene({ scrollTriggerElement }: SceneProps) {
     </div>
   )
 }
-
-
-

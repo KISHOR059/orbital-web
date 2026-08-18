@@ -15,6 +15,8 @@ export interface EarthProps {
   scrollTriggerElement?: HTMLElement | string | null
 }
 
+type GestureState = 'idle' | 'undecided' | 'horizontal' | 'vertical'
+
 export function Earth({ scrollTriggerElement }: EarthProps) {
   const userRotationGroupRef = useRef<THREE.Group>(null!)
 
@@ -27,8 +29,10 @@ export function Earth({ scrollTriggerElement }: EarthProps) {
   // Track if we are currently in the Earth Interior scroll window
   const isInteriorActive = useRef(false)
 
-  // Drag interaction state refs (zero React re-renders)
+  // Drag & Touch Gesture state refs (zero React re-renders)
   const isDragging = useRef(false)
+  const gestureState = useRef<GestureState>('idle')
+  const startPointer = useRef({ x: 0, y: 0 })
   const lastPointer = useRef({ x: 0, y: 0 })
   const velocity = useRef({ x: 0, y: 0 })
   const targetRotation = useRef({ x: 0, y: 0 })
@@ -97,47 +101,102 @@ export function Earth({ scrollTriggerElement }: EarthProps) {
     userRotationGroupRef.current.rotation.y = currentRotation.current.y
   })
 
-  // Pointer Event Handlers for Left-Click Drag Interaction on Exterior Earth
+  // Pointer Event Handlers with Dominant-Axis Gesture Discrimination
   const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
-    // If Interior phase is active, do NOT intercept or stop propagation; let EarthInterior handle it
+    // If Interior phase is active, yield to EarthInterior
     if (isInteriorActive.current) return
 
-    // Only accept desktop left mouse button (e.button === 0 and pointerType === 'mouse')
-    if (e.pointerType !== 'mouse' || e.button !== 0) return
-
-    e.stopPropagation()
-    isDragging.current = true
-    lastPointer.current = { x: e.clientX, y: e.clientY }
-    velocity.current = { x: 0, y: 0 }
-
-    const domElement = (e.nativeEvent.target as HTMLElement)
-    domElement.setPointerCapture?.(e.pointerId)
+    if (e.pointerType === 'mouse') {
+      if (e.button !== 0) return
+      e.stopPropagation()
+      isDragging.current = true
+      gestureState.current = 'horizontal'
+      lastPointer.current = { x: e.clientX, y: e.clientY }
+      velocity.current = { x: 0, y: 0 }
+      const domElement = e.nativeEvent.target as HTMLElement
+      domElement.setPointerCapture?.(e.pointerId)
+    } else if (e.pointerType === 'touch') {
+      // Mobile touch started on Earth: start in undecided mode to determine axis
+      gestureState.current = 'undecided'
+      startPointer.current = { x: e.clientX, y: e.clientY }
+      lastPointer.current = { x: e.clientX, y: e.clientY }
+      velocity.current = { x: 0, y: 0 }
+    }
   }
 
   const handlePointerMove = (e: ThreeEvent<PointerEvent>) => {
-    if (!isDragging.current) return
+    if (e.pointerType === 'mouse') {
+      if (!isDragging.current) return
 
-    const deltaX = e.clientX - lastPointer.current.x
-    const deltaY = e.clientY - lastPointer.current.y
-    lastPointer.current = { x: e.clientX, y: e.clientY }
+      const deltaX = e.clientX - lastPointer.current.x
+      const deltaY = e.clientY - lastPointer.current.y
+      lastPointer.current = { x: e.clientX, y: e.clientY }
 
-    const sensX = 0.007
-    const sensY = 0.004
+      const sensX = 0.007
+      const sensY = 0.004
 
-    targetRotation.current.y += deltaX * sensX
-    targetRotation.current.x += deltaY * sensY
+      targetRotation.current.y += deltaX * sensX
+      targetRotation.current.x += deltaY * sensY
 
-    velocity.current = {
-      x: deltaX * sensX,
-      y: deltaY * sensY,
+      velocity.current = {
+        x: deltaX * sensX,
+        y: deltaY * sensY,
+      }
+    } else if (e.pointerType === 'touch') {
+      if (gestureState.current === 'vertical') {
+        // Normal vertical scrolling in progress; do not intercept
+        return
+      }
+
+      if (gestureState.current === 'undecided') {
+        const dx = e.clientX - startPointer.current.x
+        const dy = e.clientY - startPointer.current.y
+        const dist = Math.sqrt(dx * dx + dy * dy)
+
+        // Threshold check (10px) before classifying gesture
+        if (dist >= 10) {
+          if (Math.abs(dx) > Math.abs(dy)) {
+            // Dominant Horizontal: Earth Rotation
+            gestureState.current = 'horizontal'
+            isDragging.current = true
+            lastPointer.current = { x: e.clientX, y: e.clientY }
+            const domElement = e.nativeEvent.target as HTMLElement
+            domElement.setPointerCapture?.(e.pointerId)
+          } else {
+            // Dominant Vertical: Normal browser page scroll
+            gestureState.current = 'vertical'
+            isDragging.current = false
+            return
+          }
+        } else {
+          return
+        }
+      }
+
+      if (gestureState.current === 'horizontal' && isDragging.current) {
+        const deltaX = e.clientX - lastPointer.current.x
+        const deltaY = e.clientY - lastPointer.current.y
+        lastPointer.current = { x: e.clientX, y: e.clientY }
+
+        const sensX = 0.006
+        const sensY = 0.003
+
+        targetRotation.current.y += deltaX * sensX
+        targetRotation.current.x += deltaY * sensY
+
+        velocity.current = {
+          x: deltaX * sensX,
+          y: deltaY * sensY,
+        }
+      }
     }
   }
 
   const handlePointerUp = (e: ThreeEvent<PointerEvent>) => {
-    if (!isDragging.current) return
     isDragging.current = false
+    gestureState.current = 'idle'
 
-    const domElement = (e.nativeEvent.target as HTMLElement)
+    const domElement = e.nativeEvent.target as HTMLElement
     domElement.releasePointerCapture?.(e.pointerId)
   }
 
@@ -159,7 +218,7 @@ export function Earth({ scrollTriggerElement }: EarthProps) {
         {/* Subtle Signs of Human Civilization & Cities */}
         <Humanity radius={2.008} scrollTriggerElement={scrollTriggerElement} />
 
-        {/* Interactive Desktop Drag Hit Sphere for Exterior Earth */}
+        {/* Interactive Desktop Drag & Mobile Touch Hit Sphere */}
         <mesh
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}

@@ -4,6 +4,8 @@ import { DigitalGrid } from '../digital-world/DigitalGrid'
 import { DataParticles } from '../digital-world/DataParticles'
 
 export function TechnologySpace() {
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+
   // Continuity light beams bridging the planetary sphere to deep digital space
   const bridgeGeometry = useMemo(() => {
     const points: THREE.Vector3[] = []
@@ -28,8 +30,8 @@ export function TechnologySpace() {
       {/* 1. Subtle Architectural Coordinate Grid */}
       <DigitalGrid />
 
-      {/* 2. Multi-Depth Floating Data Particles */}
-      <DataParticles count={450} />
+      {/* 2. Multi-Depth Floating Data Particles (Adaptive mobile count) */}
+      <DataParticles count={isMobile ? 180 : 450} />
 
       {/* 3. Subtle Structural Continuity Guide Lines */}
       <lineSegments geometry={bridgeGeometry}>

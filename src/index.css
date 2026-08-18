@@ -580,7 +580,7 @@ body {
 
 @media (max-width: 768px) {
   .nav-container {
-    padding: 20px 20px;
+    padding: 16px 18px;
   }
 
   .logo-sub {
@@ -588,7 +588,16 @@ body {
   }
 
   .nav-links ul {
-    gap: 18px;
+    gap: 14px;
+  }
+
+  .nav-item {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    padding: 8px 4px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
   }
 
   .nav-index {
@@ -596,37 +605,37 @@ body {
   }
 
   .narrative-master-layer {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 18px;
+    padding-right: 18px;
     align-items: flex-start;
-    padding-top: 96px;
+    padding-top: 84px;
   }
 
   .narrative-section.stage-left {
-    left: 20px;
-    right: 20px;
-    max-width: calc(100vw - 40px);
+    left: 18px;
+    right: 18px;
+    max-width: calc(100vw - 36px);
   }
 
   .narrative-section.stage-center {
-    left: 20px;
-    right: 20px;
+    left: 18px;
+    right: 18px;
     transform: none;
     align-items: flex-start;
     text-align: left;
-    max-width: calc(100vw - 40px);
+    max-width: calc(100vw - 36px);
   }
 
   .narrative-section {
     max-width: 100%;
-    gap: 12px;
+    gap: 10px;
   }
 
   .narrative-heading,
   .about-heading,
   .contact-heading {
-    font-size: clamp(30px, 7.5vw, 42px);
-    line-height: 1.05;
+    font-size: clamp(28px, 7.8vw, 40px);
+    line-height: 1.04;
   }
 
   .about-lead,
@@ -635,21 +644,29 @@ body {
     max-width: 100%;
   }
 
+  .tech-pill {
+    font-size: 9.5px;
+    padding: 6px 10px;
+  }
+
   .contact-links-group {
     flex-direction: column;
     width: 100%;
     gap: 10px;
+    margin-top: 12px;
   }
 
   .contact-link-pill {
     width: 100%;
     justify-content: center;
-    padding: 10px 16px;
+    padding: 13px 18px;
+    min-height: 46px;
+    font-size: 11px;
   }
 
   .phase-indicator {
-    bottom: 18px;
-    left: 18px;
+    bottom: 16px;
+    left: 16px;
   }
 
   .phase-coord {
@@ -657,12 +674,46 @@ body {
   }
 
   .scroll-hint {
-    bottom: 18px;
-    right: 18px;
+    bottom: 16px;
+    right: 16px;
   }
 
   .scroll-text {
     display: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .nav-container {
+    padding: 14px 14px;
+  }
+
+  .nav-links ul {
+    gap: 10px;
+  }
+
+  .nav-item {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+  }
+
+  .narrative-master-layer {
+    padding-left: 14px;
+    padding-right: 14px;
+    padding-top: 76px;
+  }
+
+  .narrative-section.stage-left,
+  .narrative-section.stage-center {
+    left: 14px;
+    right: 14px;
+    max-width: calc(100vw - 28px);
+  }
+
+  .narrative-heading,
+  .about-heading,
+  .contact-heading {
+    font-size: clamp(25px, 7.2vw, 32px);
   }
 }
 

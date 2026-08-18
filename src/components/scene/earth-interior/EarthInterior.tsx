@@ -1,5 +1,5 @@
 import { useLayoutEffect, useMemo, useRef } from 'react'
-import { useFrame, type ThreeEvent } from '@react-three/fiber'
+import { useFrame, useThree, type ThreeEvent } from '@react-three/fiber'
 import * as THREE from 'three'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -10,7 +10,12 @@ export interface EarthInteriorProps {
   scrollTriggerElement?: HTMLElement | string | null
 }
 
+type GestureState = 'idle' | 'undecided' | 'horizontal' | 'vertical'
+
 export function EarthInterior({ scrollTriggerElement }: EarthInteriorProps) {
+  const { size } = useThree()
+  const isMobile = size.width < 768
+
   const interiorGroupRef = useRef<THREE.Group>(null!)
   const interiorRotationGroupRef = useRef<THREE.Group>(null!)
   const cutawayWedgeRef = useRef<THREE.Group>(null!)
@@ -25,8 +30,10 @@ export function EarthInterior({ scrollTriggerElement }: EarthInteriorProps) {
   const cutawaySeparation = useRef(0)
   const overallVisibility = useRef(0)
 
-  // Drag interaction state refs (zero React re-renders)
+  // Drag & Touch Gesture state refs (zero React re-renders)
   const isDragging = useRef(false)
+  const gestureState = useRef<GestureState>('idle')
+  const startPointer = useRef({ x: 0, y: 0 })
   const lastPointer = useRef({ x: 0, y: 0 })
   const velocity = useRef({ x: 0, y: 0 })
   const targetRotation = useRef({ x: 0, y: 0 })
@@ -86,20 +93,20 @@ export function EarthInterior({ scrollTriggerElement }: EarthInteriorProps) {
   }, [scrollTriggerElement])
 
   // Concentric 3D Spherical Geometries (Scientific Relative Proportions)
-  // Crust: extremely thin outer shell (1.98 to 2.00)
-  // Mantle: vast intermediate shell (0.70 to 1.95)
-  // Core: centered incandescent sphere (0.0 to 0.70)
+  // Adaptive segment count (32 on mobile, 48 on desktop)
   const { coreGeom, mantleGeom, crustGeom, wedgeCrustGeom, wedgeMantleGeom } = useMemo(() => {
     const cutAngle = Math.PI * 1.5 // 270 degree cross-section for base planet
     const wedgeAngle = Math.PI * 0.5 // 90 degree wedge section for separation
+    const segs = isMobile ? 32 : 48
+    const wedgeSegs = isMobile ? 24 : 32
 
-    const core = new THREE.SphereGeometry(0.70, 48, 48) // Concentric Core
-    const mantle = new THREE.SphereGeometry(1.94, 48, 48, 0, cutAngle, 0, Math.PI)
-    const crust = new THREE.SphereGeometry(1.995, 48, 48, 0, cutAngle, 0, Math.PI)
+    const core = new THREE.SphereGeometry(0.70, segs, segs) // Concentric Core
+    const mantle = new THREE.SphereGeometry(1.94, segs, segs, 0, cutAngle, 0, Math.PI)
+    const crust = new THREE.SphereGeometry(1.995, segs, segs, 0, cutAngle, 0, Math.PI)
 
     // 90-degree separated cutaway wedge
-    const wMantle = new THREE.SphereGeometry(1.94, 32, 32, cutAngle, wedgeAngle, 0, Math.PI)
-    const wCrust = new THREE.SphereGeometry(1.995, 32, 32, cutAngle, wedgeAngle, 0, Math.PI)
+    const wMantle = new THREE.SphereGeometry(1.94, wedgeSegs, wedgeSegs, cutAngle, wedgeAngle, 0, Math.PI)
+    const wCrust = new THREE.SphereGeometry(1.995, wedgeSegs, wedgeSegs, cutAngle, wedgeAngle, 0, Math.PI)
 
     return {
       coreGeom: core,
@@ -108,7 +115,7 @@ export function EarthInterior({ scrollTriggerElement }: EarthInteriorProps) {
       wedgeCrustGeom: wCrust,
       wedgeMantleGeom: wMantle,
     }
-  }, [])
+  }, [isMobile])
 
   // Frame loop: tightly scrubbed layer progression, manual rotation damping & inertia
   useFrame(({ clock }, delta) => {
@@ -180,44 +187,101 @@ export function EarthInterior({ scrollTriggerElement }: EarthInteriorProps) {
     }
   })
 
-  // Pointer Event Handlers for Left-Click Drag on Earth Interior
+  // Pointer Event Handlers for Left-Click Drag and Touch on Earth Interior
   const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
-    // Only accept desktop left mouse button when Earth Interior is actively visible
-    if (e.pointerType !== 'mouse' || e.button !== 0 || overallVisibility.current < 0.1) return
+    if (overallVisibility.current < 0.1) return
 
-    e.stopPropagation()
-    isDragging.current = true
-    lastPointer.current = { x: e.clientX, y: e.clientY }
-    velocity.current = { x: 0, y: 0 }
-
-    const domElement = (e.nativeEvent.target as HTMLElement)
-    domElement.setPointerCapture?.(e.pointerId)
+    if (e.pointerType === 'mouse') {
+      if (e.button !== 0) return
+      e.stopPropagation()
+      isDragging.current = true
+      gestureState.current = 'horizontal'
+      lastPointer.current = { x: e.clientX, y: e.clientY }
+      velocity.current = { x: 0, y: 0 }
+      const domElement = e.nativeEvent.target as HTMLElement
+      domElement.setPointerCapture?.(e.pointerId)
+    } else if (e.pointerType === 'touch') {
+      // Mobile touch started on Earth Interior: start in undecided mode
+      gestureState.current = 'undecided'
+      startPointer.current = { x: e.clientX, y: e.clientY }
+      lastPointer.current = { x: e.clientX, y: e.clientY }
+      velocity.current = { x: 0, y: 0 }
+    }
   }
 
   const handlePointerMove = (e: ThreeEvent<PointerEvent>) => {
-    if (!isDragging.current) return
+    if (e.pointerType === 'mouse') {
+      if (!isDragging.current) return
 
-    const deltaX = e.clientX - lastPointer.current.x
-    const deltaY = e.clientY - lastPointer.current.y
-    lastPointer.current = { x: e.clientX, y: e.clientY }
+      const deltaX = e.clientX - lastPointer.current.x
+      const deltaY = e.clientY - lastPointer.current.y
+      lastPointer.current = { x: e.clientX, y: e.clientY }
 
-    const sensX = 0.007
-    const sensY = 0.004
+      const sensX = 0.007
+      const sensY = 0.004
 
-    targetRotation.current.y += deltaX * sensX
-    targetRotation.current.x += deltaY * sensY
+      targetRotation.current.y += deltaX * sensX
+      targetRotation.current.x += deltaY * sensY
 
-    velocity.current = {
-      x: deltaX * sensX,
-      y: deltaY * sensY,
+      velocity.current = {
+        x: deltaX * sensX,
+        y: deltaY * sensY,
+      }
+    } else if (e.pointerType === 'touch') {
+      if (gestureState.current === 'vertical') {
+        // Normal vertical scrolling in progress; do not intercept
+        return
+      }
+
+      if (gestureState.current === 'undecided') {
+        const dx = e.clientX - startPointer.current.x
+        const dy = e.clientY - startPointer.current.y
+        const dist = Math.sqrt(dx * dx + dy * dy)
+
+        // Threshold check (10px) before classifying gesture
+        if (dist >= 10) {
+          if (Math.abs(dx) > Math.abs(dy)) {
+            // Dominant Horizontal: Interior Rotation
+            gestureState.current = 'horizontal'
+            isDragging.current = true
+            lastPointer.current = { x: e.clientX, y: e.clientY }
+            const domElement = e.nativeEvent.target as HTMLElement
+            domElement.setPointerCapture?.(e.pointerId)
+          } else {
+            // Dominant Vertical: Normal browser page scroll
+            gestureState.current = 'vertical'
+            isDragging.current = false
+            return
+          }
+        } else {
+          return
+        }
+      }
+
+      if (gestureState.current === 'horizontal' && isDragging.current) {
+        const deltaX = e.clientX - lastPointer.current.x
+        const deltaY = e.clientY - lastPointer.current.y
+        lastPointer.current = { x: e.clientX, y: e.clientY }
+
+        const sensX = 0.006
+        const sensY = 0.003
+
+        targetRotation.current.y += deltaX * sensX
+        targetRotation.current.x += deltaY * sensY
+
+        velocity.current = {
+          x: deltaX * sensX,
+          y: deltaY * sensY,
+        }
+      }
     }
   }
 
   const handlePointerUp = (e: ThreeEvent<PointerEvent>) => {
-    if (!isDragging.current) return
     isDragging.current = false
+    gestureState.current = 'idle'
 
-    const domElement = (e.nativeEvent.target as HTMLElement)
+    const domElement = e.nativeEvent.target as HTMLElement
     domElement.releasePointerCapture?.(e.pointerId)
   }
 
@@ -304,7 +368,7 @@ export function EarthInterior({ scrollTriggerElement }: EarthInteriorProps) {
           </mesh>
         </group>
 
-        {/* Interactive Desktop Drag Hit Sphere for Earth Interior (Raycastable, transparent) */}
+        {/* Interactive Hit Sphere for Earth Interior */}
         <mesh>
           <sphereGeometry args={[2.05, 32, 32]} />
           <meshBasicMaterial transparent opacity={0} depthWrite={false} />
