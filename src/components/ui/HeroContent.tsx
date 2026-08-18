@@ -126,7 +126,7 @@ export function HeroContent({ scrollTriggerElement = '#scroll-track' }: HeroCont
         8.6
       )
 
-      // --- PHASE 5 (9 -> 10 units | 90% - 100%) ---
+      // --- PHASE 5 (9 -> 10.5 units | 45% - 52%) ---
       tl.to(
         phase5Ref.current,
         {
@@ -138,7 +138,19 @@ export function HeroContent({ scrollTriggerElement = '#scroll-track' }: HeroCont
         },
         9.0
       )
+      tl.to(
+        phase5Ref.current,
+        {
+          opacity: 0,
+          y: -40,
+          scale: 1.02,
+          ease: 'power1.in',
+          duration: 0.8,
+        },
+        10.4
+      )
     }, containerRef)
+
 
     return () => {
       ctx.revert()

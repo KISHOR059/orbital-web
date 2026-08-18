@@ -386,16 +386,114 @@ canvas {
 }
 
 /* ==========================================================================
+   WORK NARRATIVE & 3D PROJECT OVERLAYS
+   ========================================================================== */
+.work-narrative-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 25;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  padding: 0 clamp(24px, 6vw, 100px);
+}
+
+.work-card {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 520px;
+}
+
+.work-card.align-right {
+  right: clamp(24px, 6vw, 100px);
+}
+
+.work-heading {
+  font-family: var(--font-heading);
+  font-size: clamp(38px, 4.8vw, 68px);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.project-title {
+  font-family: var(--font-heading);
+  font-size: clamp(32px, 3.8vw, 52px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.project-meta-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.project-subtitle {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.project-desc {
+  font-family: var(--font-sans);
+  font-size: clamp(14px, 1.1vw, 16px);
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin: 0;
+}
+
+.tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.tech-pill {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--text-primary);
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  backdrop-filter: blur(8px);
+}
+
+/* ==========================================================================
    RESPONSIVE DESIGN BREAKPOINTS
    ========================================================================== */
 @media (max-width: 1024px) {
-  .narrative-overlay {
+  .narrative-overlay,
+  .work-narrative-overlay {
     padding-left: clamp(24px, 5vw, 48px);
+    padding-right: clamp(24px, 5vw, 48px);
   }
 
-  .narrative-section {
-    max-width: 460px;
-    gap: 16px;
+  .narrative-section,
+  .work-card {
+    max-width: 440px;
+    gap: 14px;
   }
 
   .phase-indicator,
@@ -421,24 +519,37 @@ canvas {
     display: none;
   }
 
-  .narrative-overlay {
+  .narrative-overlay,
+  .work-narrative-overlay {
     padding-left: 20px;
     padding-right: 20px;
     align-items: flex-start;
     padding-top: 100px;
   }
 
-  .narrative-section {
-    max-width: 100%;
-    gap: 14px;
+  .work-card.align-right {
+    right: auto;
+    left: 20px;
   }
 
-  .narrative-heading {
+  .narrative-section,
+  .work-card {
+    max-width: 100%;
+    gap: 12px;
+  }
+
+  .narrative-heading,
+  .work-heading {
     font-size: clamp(32px, 8vw, 44px);
     line-height: 1.05;
   }
 
-  .narrative-body {
+  .project-title {
+    font-size: clamp(26px, 6.5vw, 36px);
+  }
+
+  .narrative-body,
+  .project-desc {
     font-size: 14px;
     max-width: 100%;
   }
@@ -481,6 +592,7 @@ button:focus-visible {
     scroll-behavior: auto !important;
   }
 }
+
 
 
 

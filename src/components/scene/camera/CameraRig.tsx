@@ -18,7 +18,7 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
   // Responsive scale factor (desktop vs tablet vs mobile)
   const isMobile = size.width < 768
   const isTablet = size.width >= 768 && size.width < 1024
-  const distanceMultiplier = isMobile ? 1.4 : isTablet ? 1.18 : 1.0
+  const distanceMultiplier = isMobile ? 1.35 : isTablet ? 1.15 : 1.0
 
   // Animated camera coordinate state proxy
   const camState = useRef({
@@ -36,13 +36,11 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
   const currentTarget = useRef(new THREE.Vector3(0, 0, 0))
 
   useLayoutEffect(() => {
-    // Determine the trigger target
     const trigger = scrollTriggerElement || document.body
-
     const mult = distanceMultiplier
     const baseFov = isMobile ? 46 : 40
 
-    // Set initial coordinates
+    // Initialize coordinates
     camState.current.x = 0
     camState.current.y = 0.4
     camState.current.z = 13.5 * mult
@@ -52,7 +50,7 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
     camState.current.fov = baseFov
 
     const ctx = gsap.context(() => {
-      // Build master ScrollTrigger timeline
+      // Master ScrollTrigger timeline spanning the entire 3D journey (0 to 20 units)
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: trigger,
@@ -63,8 +61,11 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
         },
       })
 
-      // Phase 1: Deep Space (0% -> 20%)
-      // Earth starts distant and slowly glides into focus
+      // ==========================================
+      // ACT I: SPACE & EARTH PHASES (0 -> 10 units)
+      // ==========================================
+
+      // Phase 1: Deep Space (0 -> 2 units)
       tl.to(
         camState.current,
         {
@@ -81,8 +82,7 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
         0
       )
 
-      // Phase 2: Approach (20% -> 45%)
-      // Camera moves closer, Earth grows significantly in frame
+      // Phase 2: Approach (2 -> 4.5 units)
       tl.to(
         camState.current,
         {
@@ -99,8 +99,7 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
         2
       )
 
-      // Phase 3: Orbital Flyby (45% -> 70%)
-      // Lateral sweeping orbital trajectory around the terminator
+      // Phase 3: Orbital Flyby (4.5 -> 7 units)
       tl.to(
         camState.current,
         {
@@ -117,8 +116,7 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
         4.5
       )
 
-      // Phase 4: Planetary Approach (70% -> 90%)
-      // Close approach near the illuminated limb & atmospheric rim
+      // Phase 4: Planetary Approach (7 -> 9 units)
       tl.to(
         camState.current,
         {
@@ -135,8 +133,7 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
         7
       )
 
-      // Phase 5: Final Position (90% -> 100%)
-      // Settles into a calm, cinematic heroic composition framing the space
+      // Phase 5: Terminal Earth Position (9 -> 10 units)
       tl.to(
         camState.current,
         {
@@ -152,10 +149,104 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
         },
         9
       )
+
+      // ========================================================
+      // ACT II: ATMOSPHERIC DIVE & DIGITAL SPACE (10 -> 20 units)
+      // ========================================================
+
+      // Phase 6: Atmospheric Dive & Digital Ingress (10 -> 12.5 units)
+      // Camera moves through the horizon and dives into the digital coordinates
+      tl.to(
+        camState.current,
+        {
+          x: 0.2,
+          y: -22.0,
+          z: -38.0,
+          targetX: 0.0,
+          targetY: -26.0,
+          targetZ: -50.0,
+          fov: baseFov - 3,
+          ease: 'power2.inOut',
+          duration: 2.5,
+        },
+        10
+      )
+
+      // Phase 7: WORK Introduction (12.5 -> 14.5 units)
+      // Smooth descent offering a wide overview of the digital workspace
+      tl.to(
+        camState.current,
+        {
+          x: 0.0,
+          y: -25.5,
+          z: -43.0,
+          targetX: -0.5,
+          targetY: -27.5,
+          targetZ: -54.0,
+          fov: baseFov - 3,
+          ease: 'power1.inOut',
+          duration: 2,
+        },
+        12.5
+      )
+
+      // Phase 8: Project 01 — NEXUS OS (14.5 -> 16.5 units)
+      // Dedicated angled hero composition for Project 01
+      tl.to(
+        camState.current,
+        {
+          x: isMobile ? -1.8 : -0.6,
+          y: -28.0,
+          z: isMobile ? -45.5 : -47.8,
+          targetX: -2.5,
+          targetY: -28.0,
+          targetZ: -52.0,
+          fov: baseFov - 4,
+          ease: 'power2.inOut',
+          duration: 2,
+        },
+        14.5
+      )
+
+      // Phase 9: Project 02 — AETHER ENGINE (16.5 -> 18.5 units)
+      // Sweeps upward and across into Project 02 composition
+      tl.to(
+        camState.current,
+        {
+          x: isMobile ? 2.0 : 1.2,
+          y: -34.8,
+          z: isMobile ? -61.0 : -63.5,
+          targetX: 2.8,
+          targetY: -35.0,
+          targetZ: -68.0,
+          fov: baseFov - 4,
+          ease: 'power2.inOut',
+          duration: 2,
+        },
+        16.5
+      )
+
+      // Phase 10: Project 03 — SYNAPSE PROTOCOL (18.5 -> 20 units)
+      // Traverses diagonally to establish Project 03 composition
+      tl.to(
+        camState.current,
+        {
+          x: isMobile ? -0.5 : -0.7,
+          y: -42.8,
+          z: isMobile ? -77.5 : -79.6,
+          targetX: -0.5,
+          targetY: -43.0,
+          targetZ: -84.0,
+          fov: baseFov - 4,
+          ease: 'power2.inOut',
+          duration: 1.5,
+        },
+        18.5
+      )
     })
 
     return () => {
-      ctx.revert() // 100% clean teardown on unmount / HMR
+      ctx.revert()
     }
   }, [scrollTriggerElement, distanceMultiplier, isMobile])
 
@@ -163,7 +254,6 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
   useFrame((_, delta) => {
     if (!cameraRef.current) return
 
-    // Dynamic smoothing factor
     const damping = Math.min(1, delta * 6.5)
 
     // Smooth position interpolation
@@ -176,11 +266,9 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
     currentTarget.current.y += (camState.current.targetY - currentTarget.current.y) * damping
     currentTarget.current.z += (camState.current.targetZ - currentTarget.current.z) * damping
 
-    // Apply to camera
     cameraRef.current.position.copy(currentPos.current)
     cameraRef.current.lookAt(currentTarget.current)
 
-    // Update FOV if altered
     if (Math.abs(cameraRef.current.fov - camState.current.fov) > 0.01) {
       cameraRef.current.fov += (camState.current.fov - cameraRef.current.fov) * damping
       cameraRef.current.updateProjectionMatrix()
