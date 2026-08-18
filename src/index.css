@@ -92,7 +92,9 @@ body {
   width: 100% !important;
   height: 100% !important;
   outline: none;
+  pointer-events: auto;
 }
+
 
 /* ==========================================================================
    SCROLL TRACK & MASTER PROGRESSION
@@ -665,6 +667,101 @@ body {
 }
 
 /* ==========================================================================
+   LOADING SCREEN OVERLAY
+   ========================================================================== */
+.loading-screen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--bg-deep-space);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
+}
+
+.loading-screen-fade {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 280px;
+  width: 90%;
+  text-align: center;
+}
+
+.loading-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  color: var(--accent-cyan);
+  text-transform: uppercase;
+}
+
+.loading-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  box-shadow: 0 0 8px var(--accent-cyan);
+  animation: pulseIndicator 1.5s infinite alternate;
+}
+
+.loading-title {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  color: var(--text-primary);
+}
+
+.loading-bar-track {
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.loading-bar-fill {
+  width: 100%;
+  height: 100%;
+  background: var(--accent-cyan);
+  transform-origin: left;
+  box-shadow: 0 0 8px var(--accent-cyan);
+  transition: transform 0.15s ease-out;
+}
+
+.loading-status {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+}
+
+.loading-pct {
+  color: var(--accent-cyan);
+  font-weight: 600;
+}
+
+/* ==========================================================================
    ACCESSIBILITY & FOCUS & REDUCED MOTION
    ========================================================================== */
 a:focus-visible,
@@ -683,3 +780,4 @@ button:focus-visible {
     scroll-behavior: auto !important;
   }
 }
+

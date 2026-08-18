@@ -6,6 +6,7 @@ import { Navigation } from './components/ui/Navigation'
 import { NarrativeOverlay } from './components/ui/NarrativeOverlay'
 import { PhaseIndicator } from './components/ui/PhaseIndicator'
 import { ScrollIndicator } from './components/ui/ScrollIndicator'
+import { LoadingScreen } from './components/ui/LoadingScreen'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -22,6 +23,9 @@ export default function App() {
 
   return (
     <div className="app-container">
+      {/* Preloader & Asset Initialization Screen */}
+      <LoadingScreen />
+
       {/* Fixed Background 3D Canvas Layer */}
       <Scene scrollTriggerElement="#scroll-track" />
 
