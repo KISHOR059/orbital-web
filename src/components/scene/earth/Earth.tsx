@@ -4,6 +4,7 @@ import * as THREE from 'three'
 import { EarthSurface } from './EarthSurface'
 import { EarthClouds } from './EarthClouds'
 import { EarthAtmosphere } from './EarthAtmosphere'
+import { EarthInterior } from '../earth-interior/EarthInterior'
 import { Humanity } from '../humanity/Humanity'
 
 export interface EarthProps {
@@ -117,13 +118,16 @@ export function Earth({ scrollTriggerElement }: EarthProps) {
         {/* Core Planetary Surface (Locked) */}
         <EarthSurface />
 
+        {/* Dedicated 3D Concentric Earth Interior: Crust, Mantle, Core */}
+        <EarthInterior scrollTriggerElement={scrollTriggerElement} />
+
         {/* Independent Dynamic Cloud Layer (Locked) */}
         <EarthClouds radius={2.004} />
 
         {/* Cinematic Atmospheric Rayleigh Glow (Locked) */}
         <EarthAtmosphere radius={2.008} sunPosition={sunPosition} />
 
-        {/* Subtle Signs of Human Civilization & Connections */}
+        {/* Subtle Signs of Human Civilization & Cities */}
         <Humanity radius={2.008} scrollTriggerElement={scrollTriggerElement} />
 
         {/* Interactive Desktop Drag Hit Sphere */}
@@ -141,4 +145,3 @@ export function Earth({ scrollTriggerElement }: EarthProps) {
     </group>
   )
 }
-

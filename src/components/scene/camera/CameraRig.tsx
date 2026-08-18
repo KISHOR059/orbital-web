@@ -50,7 +50,7 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
     camState.current.fov = baseFov
 
     const ctx = gsap.context(() => {
-      // Master ScrollTrigger timeline spanning all 9 narrative phases (0 to 20 units)
+      // Master ScrollTrigger timeline spanning all narrative phases (0 to 20 units)
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: trigger,
@@ -95,11 +95,11 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
         2.0
       )
 
-      // 3. STAGE 03: Countless Stories (4 -> 6 units) - Sweeping closer to planetary limb
+      // 3. STAGE 03: Countless Stories (4 -> 5.5 units) - Sweeping closer to planetary limb
       tl.to(
         camState.current,
         {
-          x: 1.5 * (isMobile ? 0.5 : 1.0),
+          x: 1.4 * (isMobile ? 0.5 : 1.0),
           y: 0.22,
           z: 3.8 * mult,
           targetX: -0.12 * (isMobile ? 0.5 : 1.0),
@@ -107,78 +107,115 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
           targetZ: 0,
           fov: baseFov - 3,
           ease: 'power2.inOut',
-          duration: 2.0,
+          duration: 1.5,
         },
         4.0
       )
 
-      // 4. STAGE 04: Humanity (6 -> 8 units) - Intimate view of global civilization
+      // 4. STAGE 04: Humanity (5.5 -> 7.0 units) - Intimate view of global civilization
       tl.to(
         camState.current,
         {
-          x: 1.85 * (isMobile ? 0.45 : 1.0),
-          y: 0.06,
-          z: 2.65 * mult,
-          targetX: -0.38 * (isMobile ? 0.5 : 1.0),
+          x: 1.65 * (isMobile ? 0.45 : 1.0),
+          y: 0.12,
+          z: 2.75 * mult,
+          targetX: -0.25 * (isMobile ? 0.5 : 1.0),
           targetY: 0.02,
           targetZ: 0,
-          fov: baseFov - 4,
+          fov: baseFov - 3,
           ease: 'power2.out',
-          duration: 2.0,
+          duration: 1.5,
         },
-        6.0
+        5.5
       )
 
-      // 5. STAGE 05: Ideas Move (8 -> 10 units) - Skimming across connection light arcs
+      // 5. STAGE 05 & 06: SLOW CINEMATIC EARTH INTERIOR REVEAL (7.0 -> 13.0 units)
+      // Phase A: Slow approach & Crust reveal (7.0 -> 8.8)
       tl.to(
         camState.current,
         {
-          x: 1.7 * (isMobile ? 0.45 : 1.0),
-          y: -0.05,
-          z: 2.35 * mult,
-          targetX: -0.42 * (isMobile ? 0.5 : 1.0),
-          targetY: 0.01,
-          targetZ: 0,
+          x: 0.85 * (isMobile ? 0.4 : 0.85),
+          y: 0.16,
+          z: 2.25 * mult,
+          targetX: 0.0,
+          targetY: 0.0,
+          targetZ: 0.0,
           fov: baseFov - 4,
           ease: 'power2.inOut',
-          duration: 2.0,
+          duration: 1.8,
         },
-        8.0
+        7.0
       )
 
-      // 6. STAGE 06: Data Flows (10 -> 12 units) - Descent through network into digital space
+      // Phase B: Slow, expansive Mantle exploration (8.8 -> 11.2)
       tl.to(
         camState.current,
         {
-          x: 0.3,
-          y: -12.0,
-          z: -16.0,
+          x: 0.35 * (isMobile ? 0.2 : 0.35),
+          y: 0.06,
+          z: 1.85 * mult,
           targetX: 0.0,
-          targetY: -18.0,
-          targetZ: -32.0,
+          targetY: 0.02,
+          targetZ: 0.0,
           fov: baseFov - 3,
-          ease: 'power2.in',
-          duration: 1.0,
+          ease: 'power1.inOut',
+          duration: 2.4,
         },
-        10.0
+        8.8
       )
+
+      // Phase C: Core reveal & framing (11.2 -> 12.4)
       tl.to(
         camState.current,
         {
           x: 0.0,
-          y: -25.0,
-          z: -42.0,
+          y: -0.02,
+          z: 1.55 * mult,
           targetX: 0.0,
-          targetY: -28.0,
-          targetZ: -55.0,
+          targetY: 0.04,
+          targetZ: 0.0,
           fov: baseFov - 3,
           ease: 'power2.out',
-          duration: 1.0,
+          duration: 1.2,
         },
-        11.0
+        11.2
       )
 
-      // 7. STAGE 07: Technology (12 -> 14 units) - Deep atmospheric digital coordinate plane
+      // Phase D: Core cinematic hold / settle (12.4 -> 13.2)
+      tl.to(
+        camState.current,
+        {
+          x: 0.0,
+          y: -0.02,
+          z: 1.55 * mult,
+          targetX: 0.0,
+          targetY: 0.04,
+          targetZ: 0.0,
+          fov: baseFov - 3,
+          ease: 'none',
+          duration: 0.8,
+        },
+        12.4
+      )
+
+      // Transition from Core into Digital Space (13.2 -> 14.2)
+      tl.to(
+        camState.current,
+        {
+          x: 0.0,
+          y: -22.0,
+          z: -38.0,
+          targetX: 0.0,
+          targetY: -26.0,
+          targetZ: -50.0,
+          fov: baseFov - 3,
+          ease: 'power2.in',
+          duration: 1.0,
+        },
+        13.2
+      )
+
+      // 6. STAGE 07: Technology (14.2 -> 16.0 units) - Deep atmospheric digital coordinate plane
       tl.to(
         camState.current,
         {
@@ -190,12 +227,12 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
           targetZ: -60.0,
           fov: baseFov - 3,
           ease: 'power2.inOut',
-          duration: 2.0,
+          duration: 1.8,
         },
-        12.0
+        14.2
       )
 
-      // 8. STAGE 08: About Me (14 -> 17 units) - Deceleration beside Identity Object
+      // 7. STAGE 08: About Me (16.0 -> 18.2 units) - Deceleration beside Identity Object
       tl.to(
         camState.current,
         {
@@ -207,12 +244,12 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
           targetZ: -75.0,
           fov: baseFov - 3,
           ease: 'power2.inOut',
-          duration: 3.0,
+          duration: 2.2,
         },
-        14.0
+        16.0
       )
 
-      // 9. STAGE 09: Contact (17 -> 20 units) - Serene finale settling
+      // 8. STAGE 09: Contact (18.2 -> 20.0 units) - Serene finale settling
       tl.to(
         camState.current,
         {
@@ -224,9 +261,9 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
           targetZ: -84.0,
           fov: baseFov - 3,
           ease: 'power2.out',
-          duration: 3.0,
+          duration: 1.8,
         },
-        17.0
+        18.2
       )
     })
 

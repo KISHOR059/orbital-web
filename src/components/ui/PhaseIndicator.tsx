@@ -9,10 +9,10 @@ const PHASES = [
   { index: '02 / 09', name: 'ONE WORLD', coord: 'LAT 18°20\'N // ALT 16,500 KM' },
   { index: '03 / 09', name: 'CONTINENTS', coord: 'LAT 28°45\'N // ALT 6,200 KM' },
   { index: '04 / 09', name: 'HUMANITY', coord: 'GLOBAL NETWORK // 8.1B NODES' },
-  { index: '05 / 09', name: 'NETWORK', coord: 'DATA PULSES // INTER-CONTINENTAL' },
-  { index: '06 / 09', name: 'DATA FLOWS', coord: 'INGRESS // SECTOR -25 // LEVEL -40' },
+  { index: '05 / 09', name: 'INTERIOR', coord: 'CROSS-SECTION // DEPTH 6,371 KM' },
+  { index: '06 / 09', name: 'CORE', coord: 'PLANETARY CORE // DEPTH 6,371 KM' },
   { index: '07 / 09', name: 'TECHNOLOGY', coord: 'COORDINATE SPACE // [-25..25, -45]' },
-  { index: '08 / 09', name: 'ABOUT', coord: 'IDENTITY // KISHOR // ENGINEER' },
+  { index: '08 / 09', name: 'ABOUT', coord: 'IDENTITY // KISHOR' },
   { index: '09 / 09', name: 'CONTACT', coord: 'COMMUNICATION // OPEN VECTOR' },
 ]
 

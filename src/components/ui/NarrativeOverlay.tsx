@@ -23,8 +23,6 @@ export function NarrativeOverlay({ scrollTriggerElement = '#scroll-track' }: Nar
   const s2Ref = useRef<HTMLDivElement>(null)
   const s3Ref = useRef<HTMLDivElement>(null)
   const s4Ref = useRef<HTMLDivElement>(null)
-  const s5Ref = useRef<HTMLDivElement>(null)
-  const s6Ref = useRef<HTMLDivElement>(null)
   const s7Ref = useRef<HTMLDivElement>(null)
   const s8Ref = useRef<HTMLDivElement>(null)
   const s9Ref = useRef<HTMLDivElement>(null)
@@ -40,15 +38,13 @@ export function NarrativeOverlay({ scrollTriggerElement = '#scroll-track' }: Nar
           s2Ref.current,
           s3Ref.current,
           s4Ref.current,
-          s5Ref.current,
-          s6Ref.current,
           s7Ref.current,
           s8Ref.current,
           s9Ref.current,
         ],
         {
           opacity: 0,
-          y: 40,
+          y: 35,
           scale: 0.97,
           force3D: true,
         }
@@ -81,40 +77,36 @@ export function NarrativeOverlay({ scrollTriggerElement = '#scroll-track' }: Nar
         )
         tl.to(
           el,
-          { opacity: 0, y: -40, scale: 1.02, ease: 'power2.in', duration: outEnd - outStart },
+          { opacity: 0, y: -35, scale: 1.02, ease: 'power2.in', duration: outEnd - outStart },
           outStart
         )
       }
 
       // STAGE 01: Deep Space (0.0 -> 1.8 units)
-      tl.to(s1Ref.current, { opacity: 0, y: -40, scale: 1.02, ease: 'power2.in', duration: 0.6 }, 1.2)
+      tl.to(s1Ref.current, { opacity: 0, y: -35, scale: 1.02, ease: 'power2.in', duration: 0.6 }, 1.2)
 
-      // STAGE 02: One World (2.2 -> 3.8 units)
-      animateStage(s2Ref.current, 2.2, 2.8, 3.2, 3.8)
+      // STAGE 02: One World (2.0 -> 3.6 units)
+      animateStage(s2Ref.current, 2.0, 2.6, 3.0, 3.6)
 
-      // STAGE 03: Countless Stories (4.2 -> 5.8 units)
-      animateStage(s3Ref.current, 4.2, 4.8, 5.2, 5.8)
+      // STAGE 03: Countless Stories (4.0 -> 5.2 units)
+      animateStage(s3Ref.current, 4.0, 4.5, 4.8, 5.2)
 
-      // STAGE 04: Humanity (6.2 -> 7.8 units)
-      animateStage(s4Ref.current, 6.2, 6.8, 7.2, 7.8)
+      // STAGE 04: Humanity (5.5 -> 6.8 units)
+      animateStage(s4Ref.current, 5.5, 6.0, 6.4, 6.8)
 
-      // STAGE 05: Network (8.2 -> 9.8 units)
-      animateStage(s5Ref.current, 8.2, 8.8, 9.2, 9.8)
+      // (STAGES 05 & 06: Pure visual Earth Interior Cutaway from 7.0 to 13.5 - Zero text overlays)
 
-      // STAGE 06: Data Flows (10.2 -> 12.0 units)
-      animateStage(s6Ref.current, 10.2, 10.8, 11.4, 12.0)
+      // STAGE 07: Technology (14.2 -> 15.8 units) - Completely 0 opacity by 15.8
+      animateStage(s7Ref.current, 14.2, 14.8, 15.2, 15.8)
 
-      // STAGE 07: Technology (12.4 -> 14.4 units) - Completely 0 opacity by 14.4
-      animateStage(s7Ref.current, 12.4, 13.0, 13.8, 14.4)
+      // STAGE 08: About Me (16.2 -> 18.0 units) - Starts at 16.2, completely 0 opacity by 18.0
+      animateStage(s8Ref.current, 16.2, 16.8, 17.5, 18.0)
 
-      // STAGE 08: About Me (14.8 -> 17.0 units) - Starts at 14.8, completely 0 opacity by 17.0
-      animateStage(s8Ref.current, 14.8, 15.4, 16.4, 17.0)
-
-      // STAGE 09: Contact (17.4 -> 20.0 units) - Settles as the serene finale
+      // STAGE 09: Contact (18.4 -> 20.0 units) - Settles as the serene finale
       tl.to(
         s9Ref.current,
         { opacity: 1, y: 0, scale: 1, ease: 'power2.out', duration: 0.8 },
-        17.4
+        18.4
       )
     }, containerRef)
 
@@ -171,30 +163,6 @@ export function NarrativeOverlay({ scrollTriggerElement = '#scroll-track' }: Nar
         <h2 className="narrative-heading">
           <span className="heading-line">WE</span>
           <span className="heading-line">CONNECT.</span>
-        </h2>
-      </section>
-
-      {/* 05: NETWORK */}
-      <section ref={s5Ref} className="narrative-section stage-left">
-        <div className="narrative-badge">
-          <span className="badge-dot" />
-          <span>05 // NETWORK</span>
-        </div>
-        <h2 className="narrative-heading">
-          <span className="heading-line">IDEAS</span>
-          <span className="heading-line">MOVE.</span>
-        </h2>
-      </section>
-
-      {/* 06: DATA FLOWS */}
-      <section ref={s6Ref} className="narrative-section stage-left">
-        <div className="narrative-badge">
-          <span className="badge-dot" />
-          <span>06 // DATA</span>
-        </div>
-        <h2 className="narrative-heading">
-          <span className="heading-line">DATA</span>
-          <span className="heading-line">FLOWS.</span>
         </h2>
       </section>
 
