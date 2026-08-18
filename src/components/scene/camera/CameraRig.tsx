@@ -50,7 +50,7 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
     camState.current.fov = baseFov
 
     const ctx = gsap.context(() => {
-      // Master ScrollTrigger timeline spanning Space -> Earth -> Humanity (0 to 10 units)
+      // Master ScrollTrigger timeline spanning Deep Space -> Earth -> Humanity -> Technology -> About -> Contact (0 to 20 units)
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: trigger,
@@ -61,55 +61,172 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
         },
       })
 
-      // STAGE 01: Deep Space (0 -> 3.2 units)
+      // 1. STAGE 01: Deep Space (0 -> 2 units)
       tl.to(
         camState.current,
         {
           x: 0,
-          y: 0.35,
-          z: 7.8 * mult,
+          y: 0.38,
+          z: 9.0 * mult,
           targetX: 0,
           targetY: 0,
           targetZ: 0,
           fov: baseFov - 1,
           ease: 'power1.inOut',
-          duration: 3.2,
+          duration: 2.0,
         },
         0
       )
 
-      // STAGE 02: Earth Approach & Orbital Sweep (3.2 -> 6.5 units)
+      // 2. STAGE 02: One World (2 -> 4 units)
       tl.to(
         camState.current,
         {
-          x: 1.4 * (isMobile ? 0.5 : 1.0),
-          y: 0.28,
-          z: 4.2 * mult,
-          targetX: 0.1,
+          x: 0.9 * (isMobile ? 0.45 : 1.0),
+          y: 0.32,
+          z: 5.8 * mult,
+          targetX: 0.05,
           targetY: 0,
           targetZ: 0,
           fov: baseFov - 2,
           ease: 'power1.inOut',
-          duration: 3.3,
+          duration: 2.0,
         },
-        3.2
+        2.0
       )
 
-      // STAGE 03: Humanity & Geographic Visualization (6.5 -> 10.0 units)
+      // 3. STAGE 03: Countless Stories (4 -> 6 units)
+      tl.to(
+        camState.current,
+        {
+          x: 1.5 * (isMobile ? 0.5 : 1.0),
+          y: 0.22,
+          z: 3.8 * mult,
+          targetX: -0.12 * (isMobile ? 0.5 : 1.0),
+          targetY: 0.02,
+          targetZ: 0,
+          fov: baseFov - 3,
+          ease: 'power2.inOut',
+          duration: 2.0,
+        },
+        4.0
+      )
+
+      // 4. STAGE 04: Humanity & Civilization Network (6 -> 8 units)
       tl.to(
         camState.current,
         {
           x: 1.85 * (isMobile ? 0.45 : 1.0),
-          y: 0.05,
-          z: 2.55 * mult,
+          y: 0.06,
+          z: 2.65 * mult,
           targetX: -0.38 * (isMobile ? 0.5 : 1.0),
           targetY: 0.02,
           targetZ: 0,
           fov: baseFov - 4,
           ease: 'power2.out',
-          duration: 3.5,
+          duration: 2.0,
         },
-        6.5
+        6.0
+      )
+
+      // 5. STAGE 05: Ideas Move / Network Flow (8 -> 10 units)
+      tl.to(
+        camState.current,
+        {
+          x: 1.7 * (isMobile ? 0.45 : 1.0),
+          y: -0.05,
+          z: 2.35 * mult,
+          targetX: -0.42 * (isMobile ? 0.5 : 1.0),
+          targetY: 0.01,
+          targetZ: 0,
+          fov: baseFov - 4,
+          ease: 'power1.inOut',
+          duration: 2.0,
+        },
+        8.0
+      )
+
+      // 6. STAGE 06: Data Flows / Descent past Earth into Digital Space (10 -> 12 units)
+      tl.to(
+        camState.current,
+        {
+          x: 0.3,
+          y: -12.0,
+          z: -16.0,
+          targetX: 0.0,
+          targetY: -18.0,
+          targetZ: -32.0,
+          fov: baseFov - 3,
+          ease: 'power2.in',
+          duration: 1.0,
+        },
+        10.0
+      )
+      tl.to(
+        camState.current,
+        {
+          x: 0.0,
+          y: -25.0,
+          z: -42.0,
+          targetX: 0.0,
+          targetY: -28.0,
+          targetZ: -55.0,
+          fov: baseFov - 3,
+          ease: 'power2.out',
+          duration: 1.0,
+        },
+        11.0
+      )
+
+      // 7. STAGE 07: Technology Brings It Together (12 -> 14 units)
+      tl.to(
+        camState.current,
+        {
+          x: 0.0,
+          y: -26.0,
+          z: -45.0,
+          targetX: 0.0,
+          targetY: -28.5,
+          targetZ: -60.0,
+          fov: baseFov - 3,
+          ease: 'power1.inOut',
+          duration: 2.0,
+        },
+        12.0
+      )
+
+      // 8. STAGE 08: About Me (14 -> 17 units)
+      tl.to(
+        camState.current,
+        {
+          x: isMobile ? 0.0 : -0.8,
+          y: -38.0,
+          z: -69.5 * mult,
+          targetX: isMobile ? 0.0 : 0.8,
+          targetY: -38.0,
+          targetZ: -75.0,
+          fov: baseFov - 3,
+          ease: 'power2.inOut',
+          duration: 3.0,
+        },
+        14.0
+      )
+
+      // 9. STAGE 09: Contact / Final Calm Settled Composition (17 -> 20 units)
+      tl.to(
+        camState.current,
+        {
+          x: 0.0,
+          y: -38.0,
+          z: -78.0 * mult,
+          targetX: 0.0,
+          targetY: -38.0,
+          targetZ: -84.0,
+          fov: baseFov - 3,
+          ease: 'power2.out',
+          duration: 3.0,
+        },
+        17.0
       )
     })
 

@@ -5,12 +5,16 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 
 const PHASES = [
-  { index: '01 / 03', name: 'DEEP SPACE', coord: 'LAT 00°00\'N // ALT 36,000 KM' },
-  { index: '02 / 03', name: 'EARTH', coord: 'LAT 24°15\'N // ALT 8,200 KM' },
-  { index: '03 / 03', name: 'HUMANITY', coord: 'GLOBAL NETWORK // 8.1B NODES' },
+  { index: '01 / 09', name: 'DEEP SPACE', coord: 'LAT 00°00\'N // ALT 36,000 KM' },
+  { index: '02 / 09', name: 'ONE WORLD', coord: 'LAT 18°20\'N // ALT 16,500 KM' },
+  { index: '03 / 09', name: 'CONTINENTS', coord: 'LAT 28°45\'N // ALT 6,200 KM' },
+  { index: '04 / 09', name: 'HUMANITY', coord: 'GLOBAL NETWORK // 8.1B NODES' },
+  { index: '05 / 09', name: 'NETWORK', coord: 'DATA PULSES // INTER-CONTINENTAL' },
+  { index: '06 / 09', name: 'DATA FLOWS', coord: 'INGRESS // SECTOR -25 // LEVEL -40' },
+  { index: '07 / 09', name: 'TECHNOLOGY', coord: 'COORDINATE SPACE // [-25..25, -45]' },
+  { index: '08 / 09', name: 'ABOUT', coord: 'IDENTITY // KISHOR // ENGINEER' },
+  { index: '09 / 09', name: 'CONTACT', coord: 'COMMUNICATION // OPEN VECTOR' },
 ]
-
-
 
 export interface PhaseIndicatorProps {
   scrollTriggerElement?: HTMLElement | string | null
@@ -55,7 +59,7 @@ export function PhaseIndicator({ scrollTriggerElement = '#scroll-track' }: Phase
     <aside ref={containerRef} className="phase-indicator" aria-label="Orbital Telemetry">
       <div className="phase-telemetry">
         <span ref={indexRef} className="phase-number">
-          01 / 05
+          01 / 09
         </span>
         <span className="telemetry-separator" aria-hidden="true">
           //

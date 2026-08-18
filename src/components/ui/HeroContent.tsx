@@ -13,6 +13,10 @@ export function HeroContent({ scrollTriggerElement = '#scroll-track' }: HeroCont
   const stage1Ref = useRef<HTMLDivElement>(null)
   const stage2Ref = useRef<HTMLDivElement>(null)
   const stage3Ref = useRef<HTMLDivElement>(null)
+  const stage4Ref = useRef<HTMLDivElement>(null)
+  const stage5Ref = useRef<HTMLDivElement>(null)
+  const stage6Ref = useRef<HTMLDivElement>(null)
+  const stage7Ref = useRef<HTMLDivElement>(null)
 
   useLayoutEffect(() => {
     const trigger = scrollTriggerElement || '#scroll-track'
@@ -20,11 +24,21 @@ export function HeroContent({ scrollTriggerElement = '#scroll-track' }: HeroCont
     const ctx = gsap.context(() => {
       // Initialize starting visual states
       gsap.set(stage1Ref.current, { opacity: 1, y: 0, scale: 1 })
-      gsap.set([stage2Ref.current, stage3Ref.current], {
-        opacity: 0,
-        y: 40,
-        scale: 0.96,
-      })
+      gsap.set(
+        [
+          stage2Ref.current,
+          stage3Ref.current,
+          stage4Ref.current,
+          stage5Ref.current,
+          stage6Ref.current,
+          stage7Ref.current,
+        ],
+        {
+          opacity: 0,
+          y: 40,
+          scale: 0.96,
+        }
+      )
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -36,64 +50,88 @@ export function HeroContent({ scrollTriggerElement = '#scroll-track' }: HeroCont
         },
       })
 
-      // ==========================================
-      // STAGE 01: DEEP SPACE (0 -> 3.2 units)
-      // ==========================================
+      // Total timeline: 14 units
+
+      // 1. DEEP SPACE (0 -> 2 units)
       tl.to(
         stage1Ref.current,
-        {
-          opacity: 0,
-          y: -40,
-          scale: 1.02,
-          ease: 'power1.in',
-          duration: 0.8,
-        },
-        2.4
+        { opacity: 0, y: -40, scale: 1.02, ease: 'power1.in', duration: 0.8 },
+        1.4
       )
 
-      // ==========================================
-      // STAGE 02: EARTH (3.2 -> 6.5 units)
-      // "ONE WORLD. COUNTLESS STORIES."
-      // ==========================================
+      // 2. ONE WORLD (2 -> 4 units)
       tl.to(
         stage2Ref.current,
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          ease: 'power1.out',
-          duration: 0.8,
-        },
-        3.2
+        { opacity: 1, y: 0, scale: 1, ease: 'power1.out', duration: 0.8 },
+        2.0
       )
       tl.to(
         stage2Ref.current,
-        {
-          opacity: 0,
-          y: -40,
-          scale: 1.02,
-          ease: 'power1.in',
-          duration: 0.8,
-        },
-        5.6
+        { opacity: 0, y: -40, scale: 1.02, ease: 'power1.in', duration: 0.8 },
+        3.4
       )
 
-      // ==========================================
-      // STAGE 03: HUMANITY (6.5 -> 10.0 units)
-      // "WE CONNECT. WE CREATE."
-      // ==========================================
+      // 3. COUNTLESS STORIES (4 -> 6 units)
       tl.to(
         stage3Ref.current,
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          ease: 'power1.out',
-          duration: 0.8,
-        },
-        6.5
+        { opacity: 1, y: 0, scale: 1, ease: 'power1.out', duration: 0.8 },
+        4.0
+      )
+      tl.to(
+        stage3Ref.current,
+        { opacity: 0, y: -40, scale: 1.02, ease: 'power1.in', duration: 0.8 },
+        5.4
+      )
+
+      // 4. WE CONNECT (6 -> 8 units)
+      tl.to(
+        stage4Ref.current,
+        { opacity: 1, y: 0, scale: 1, ease: 'power1.out', duration: 0.8 },
+        6.0
+      )
+      tl.to(
+        stage4Ref.current,
+        { opacity: 0, y: -40, scale: 1.02, ease: 'power1.in', duration: 0.8 },
+        7.4
+      )
+
+      // 5. IDEAS MOVE (8 -> 10 units)
+      tl.to(
+        stage5Ref.current,
+        { opacity: 1, y: 0, scale: 1, ease: 'power1.out', duration: 0.8 },
+        8.0
+      )
+      tl.to(
+        stage5Ref.current,
+        { opacity: 0, y: -40, scale: 1.02, ease: 'power1.in', duration: 0.8 },
+        9.4
+      )
+
+      // 6. DATA FLOWS (10 -> 12 units)
+      tl.to(
+        stage6Ref.current,
+        { opacity: 1, y: 0, scale: 1, ease: 'power1.out', duration: 0.8 },
+        10.0
+      )
+      tl.to(
+        stage6Ref.current,
+        { opacity: 0, y: -40, scale: 1.02, ease: 'power1.in', duration: 0.8 },
+        11.4
+      )
+
+      // 7. TECHNOLOGY BRINGS IT TOGETHER (12 -> 14 units)
+      tl.to(
+        stage7Ref.current,
+        { opacity: 1, y: 0, scale: 1, ease: 'power1.out', duration: 0.8 },
+        12.0
+      )
+      tl.to(
+        stage7Ref.current,
+        { opacity: 0, y: -40, scale: 1.02, ease: 'power1.in', duration: 0.8 },
+        13.5
       )
     }, containerRef)
+
 
     return () => {
       ctx.revert()
@@ -102,7 +140,7 @@ export function HeroContent({ scrollTriggerElement = '#scroll-track' }: HeroCont
 
   return (
     <div ref={containerRef} className="narrative-overlay" aria-live="polite">
-      {/* STAGE 01: DEEP SPACE */}
+      {/* 1. DEEP SPACE */}
       <section ref={stage1Ref} className="narrative-section phase-1">
         <div className="narrative-badge">
           <span className="badge-dot" />
@@ -113,39 +151,79 @@ export function HeroContent({ scrollTriggerElement = '#scroll-track' }: HeroCont
           DIGITAL<br />
           WORLDS.
         </h1>
-        <p className="narrative-body">
-          Software engineer creating immersive experiences at the intersection of technology, design, and the web.
-        </p>
       </section>
 
-      {/* STAGE 02: EARTH */}
+      {/* 2. ONE WORLD */}
       <section ref={stage2Ref} className="narrative-section phase-2">
         <div className="narrative-badge">
           <span className="badge-dot" />
           <span>02 // EARTH</span>
         </div>
         <h2 className="narrative-heading">
-          ONE WORLD.<br />
-          <span className="narrative-subheading">COUNTLESS STORIES.</span>
+          ONE<br />
+          WORLD.
         </h2>
-        <p className="narrative-body">
-          A singular sphere drifting through cosmic quietude, carrying everything we know.
-        </p>
       </section>
 
-      {/* STAGE 03: HUMANITY */}
+      {/* 3. COUNTLESS STORIES */}
       <section ref={stage3Ref} className="narrative-section phase-3">
         <div className="narrative-badge">
           <span className="badge-dot" />
-          <span>03 // HUMANITY</span>
+          <span>03 // CONTINENTS</span>
         </div>
         <h2 className="narrative-heading">
-          WE CONNECT.<br />
-          WE CREATE.
+          COUNTLESS<br />
+          STORIES.
         </h2>
-        <p className="narrative-body">
-          Eight billion lives, connected across continents through light, networks, and shared human imagination.
-        </p>
+      </section>
+
+      {/* 4. WE CONNECT */}
+      <section ref={stage4Ref} className="narrative-section phase-4">
+        <div className="narrative-badge">
+          <span className="badge-dot" />
+          <span>04 // HUMANITY</span>
+        </div>
+        <h2 className="narrative-heading">
+          WE<br />
+          CONNECT.
+        </h2>
+      </section>
+
+      {/* 5. IDEAS MOVE */}
+      <section ref={stage5Ref} className="narrative-section phase-5">
+        <div className="narrative-badge">
+          <span className="badge-dot" />
+          <span>05 // NETWORK</span>
+        </div>
+        <h2 className="narrative-heading">
+          IDEAS<br />
+          MOVE.
+        </h2>
+      </section>
+
+      {/* 6. DATA FLOWS */}
+      <section ref={stage6Ref} className="narrative-section phase-6">
+        <div className="narrative-badge">
+          <span className="badge-dot" />
+          <span>06 // DATA</span>
+        </div>
+        <h2 className="narrative-heading">
+          DATA<br />
+          FLOWS.
+        </h2>
+      </section>
+
+      {/* 7. TECHNOLOGY BRINGS IT TOGETHER */}
+      <section ref={stage7Ref} className="narrative-section phase-7">
+        <div className="narrative-badge">
+          <span className="badge-dot" />
+          <span>07 // TECHNOLOGY</span>
+        </div>
+        <h2 className="narrative-heading">
+          TECHNOLOGY<br />
+          BRINGS IT<br />
+          TOGETHER.
+        </h2>
       </section>
     </div>
   )

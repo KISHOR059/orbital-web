@@ -2,7 +2,11 @@ import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Stars } from '@react-three/drei'
 import { Earth } from './earth/Earth'
+import { TechnologySpace } from './technology/TechnologySpace'
+import { IdentityObject } from './identity/IdentityObject'
 import { CameraRig } from './camera/CameraRig'
+
+
 
 export interface SceneProps {
   scrollTriggerElement?: HTMLElement | string | null
@@ -64,6 +68,16 @@ export function Scene({ scrollTriggerElement }: SceneProps) {
         {/* Cinematic 3D Earth System */}
         <Suspense fallback={null}>
           <Earth />
+        </Suspense>
+
+        {/* Abstract Digital Technology Space */}
+        <Suspense fallback={null}>
+          <TechnologySpace />
+        </Suspense>
+
+        {/* Abstract 3D Identity Object */}
+        <Suspense fallback={null}>
+          <IdentityObject />
         </Suspense>
       </Canvas>
     </div>

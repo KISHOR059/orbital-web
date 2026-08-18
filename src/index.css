@@ -535,17 +535,177 @@ canvas {
 
 
 /* ==========================================================================
+   ABOUT ME EDITORIAL OVERLAY
+   ========================================================================== */
+.about-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 22;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  padding-left: clamp(24px, 8vw, 120px);
+  padding-right: 24px;
+}
+
+.about-content-card {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  max-width: 580px;
+}
+
+.about-heading {
+  font-family: var(--font-heading);
+  font-size: clamp(38px, 5.2vw, 72px);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.about-lead {
+  font-family: var(--font-sans);
+  font-size: clamp(15px, 1.25vw, 18px);
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin: 0;
+  max-width: 480px;
+}
+
+.about-details {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 6px;
+}
+
+.about-focus-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.focus-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--accent-cyan);
+  text-transform: uppercase;
+}
+
+.focus-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ==========================================================================
+   CONTACT EDITORIAL OVERLAY
+   ========================================================================== */
+.contact-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 22;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 clamp(24px, 6vw, 100px);
+}
+
+.contact-content-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  max-width: 680px;
+}
+
+.contact-heading {
+  font-family: var(--font-heading);
+  font-size: clamp(38px, 5.2vw, 76px);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.contact-lead {
+  font-family: var(--font-sans);
+  font-size: clamp(14px, 1.15vw, 17px);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 440px;
+}
+
+.contact-links-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.contact-link-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: none;
+  padding: 9px 18px;
+  border-radius: 4px;
+  background: rgba(56, 189, 248, 0.06);
+  border: 1px solid rgba(56, 189, 248, 0.24);
+  pointer-events: auto;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.contact-link-pill:hover {
+  background: rgba(56, 189, 248, 0.16);
+  border-color: rgba(56, 189, 248, 0.55);
+  transform: translateY(-2px);
+}
+
+.contact-link-pill:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 3px;
+}
+
+/* ==========================================================================
    RESPONSIVE DESIGN BREAKPOINTS
    ========================================================================== */
+
+
 @media (max-width: 1024px) {
   .narrative-overlay,
-  .work-narrative-overlay {
+  .work-narrative-overlay,
+  .about-overlay {
     padding-left: clamp(24px, 5vw, 48px);
     padding-right: clamp(24px, 5vw, 48px);
   }
 
   .narrative-section,
-  .work-card {
+  .work-card,
+  .about-content-card {
     max-width: 420px;
     gap: 14px;
   }
@@ -574,7 +734,8 @@ canvas {
   }
 
   .narrative-overlay,
-  .work-narrative-overlay {
+  .work-narrative-overlay,
+  .about-overlay {
     padding-left: 20px;
     padding-right: 20px;
     align-items: flex-start;
@@ -587,7 +748,8 @@ canvas {
   }
 
   .narrative-section,
-  .work-card {
+  .work-card,
+  .about-content-card {
     max-width: 100%;
     gap: 12px;
   }
@@ -597,10 +759,36 @@ canvas {
   }
 
   .narrative-heading,
-  .work-heading {
+  .work-heading,
+  .about-heading,
+  .contact-heading {
     font-size: clamp(30px, 7.5vw, 42px);
     line-height: 1.05;
   }
+
+  .contact-lead {
+    font-size: 13.5px;
+    max-width: 100%;
+  }
+
+  .contact-links-group {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .contact-link-pill {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 16px;
+  }
+
+  .about-lead {
+    font-size: 14px;
+    max-width: 100%;
+  }
+
+
 
   .project-title {
     font-size: clamp(24px, 6vw, 32px);
