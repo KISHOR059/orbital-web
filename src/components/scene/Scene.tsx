@@ -25,20 +25,20 @@ export function Scene({ scrollTriggerElement }: SceneProps) {
         <color attach="background" args={['#02040a']} />
 
         {/* Low ambient light for deep space shadow contrast */}
-        <ambientLight intensity={0.15} color="#dbeafe" />
+        <ambientLight intensity={0.12} color="#ffffff" />
 
         {/* Sun-like key directional light */}
         <directionalLight
           position={[6, 2.5, 4.5]}
-          intensity={3.0}
+          intensity={3.2}
           color="#fffdf5"
         />
 
-        {/* Subtle cool fill light on shadow side */}
+        {/* Deep space faint fill light */}
         <directionalLight
           position={[-6, -1.5, -3]}
-          intensity={0.2}
-          color="#1e3a8a"
+          intensity={0.04}
+          color="#60a5fa"
         />
 
         {/* Multi-depth cosmic starfields */}
