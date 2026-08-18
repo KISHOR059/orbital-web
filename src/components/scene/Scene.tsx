@@ -2,23 +2,25 @@ import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Stars } from '@react-three/drei'
 import { Earth } from './earth/Earth'
+import { CameraRig } from './camera/CameraRig'
 
-export function Scene() {
+export interface SceneProps {
+  scrollTriggerElement?: HTMLElement | string | null
+}
+
+export function Scene({ scrollTriggerElement }: SceneProps) {
   return (
     <div className="scene-container">
       <Canvas
-        camera={{
-          position: [0, 0, 5.8],
-          fov: 42,
-          near: 0.1,
-          far: 1000,
-        }}
         dpr={[1, 2]}
         gl={{
           antialias: true,
           powerPreference: 'high-performance',
         }}
       >
+        {/* Cinematic Scroll-Driven Camera Rig */}
+        <CameraRig scrollTriggerElement={scrollTriggerElement} />
+
         {/* Deep space cosmic background */}
         <color attach="background" args={['#02040a']} />
 
@@ -67,4 +69,5 @@ export function Scene() {
     </div>
   )
 }
+
 

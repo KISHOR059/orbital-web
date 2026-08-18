@@ -8,14 +8,12 @@ export function EarthSurface() {
     '/textures/earth/earth_specular.jpg',
   ])
 
-  // Enhance texture sampling sharpness & color space
-  dayMap.colorSpace = THREE.SRGBColorSpace
-
   return (
     <mesh>
       <sphereGeometry args={[2, 64, 64]} />
       <meshStandardMaterial
         map={dayMap}
+        map-colorSpace={THREE.SRGBColorSpace}
         normalMap={normalMap}
         normalScale={new THREE.Vector2(0.85, 0.85)}
         roughnessMap={specularMap}
@@ -25,3 +23,4 @@ export function EarthSurface() {
     </mesh>
   )
 }
+
