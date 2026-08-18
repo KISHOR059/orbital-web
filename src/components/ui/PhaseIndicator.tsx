@@ -26,6 +26,7 @@ export function PhaseIndicator({ scrollTriggerElement = '#scroll-track' }: Phase
   const nameRef = useRef<HTMLSpanElement>(null)
   const coordRef = useRef<HTMLSpanElement>(null)
   const progressFillRef = useRef<HTMLDivElement>(null)
+  const currentPhaseIndex = useRef<number>(-1)
 
   useLayoutEffect(() => {
     const trigger = scrollTriggerElement || '#scroll-track'
@@ -38,11 +39,16 @@ export function PhaseIndicator({ scrollTriggerElement = '#scroll-track' }: Phase
         onUpdate: (self) => {
           const progress = self.progress
           const phaseIndex = Math.min(PHASES.length - 1, Math.floor(progress * PHASES.length))
-          const current = PHASES[phaseIndex]
 
-          if (indexRef.current) indexRef.current.textContent = current.index
-          if (nameRef.current) nameRef.current.textContent = current.name
-          if (coordRef.current) coordRef.current.textContent = current.coord
+          // Only update DOM strings when discrete phase changes
+          if (phaseIndex !== currentPhaseIndex.current) {
+            currentPhaseIndex.current = phaseIndex
+            const current = PHASES[phaseIndex]
+            if (indexRef.current) indexRef.current.textContent = current.index
+            if (nameRef.current) nameRef.current.textContent = current.name
+            if (coordRef.current) coordRef.current.textContent = current.coord
+          }
+
           if (progressFillRef.current) {
             progressFillRef.current.style.transform = `scaleX(${progress})`
           }

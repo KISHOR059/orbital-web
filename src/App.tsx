@@ -1,14 +1,24 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Scene } from './components/scene/Scene'
 import { Navigation } from './components/ui/Navigation'
-import { HeroContent } from './components/ui/HeroContent'
-import { AboutContent } from './components/ui/AboutContent'
-import { ContactContent } from './components/ui/ContactContent'
+import { NarrativeOverlay } from './components/ui/NarrativeOverlay'
 import { PhaseIndicator } from './components/ui/PhaseIndicator'
 import { ScrollIndicator } from './components/ui/ScrollIndicator'
 
+gsap.registerPlugin(ScrollTrigger)
+
 export default function App() {
   const scrollTrackRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    // Ensure all ScrollTriggers calculate accurate layout dimensions after initial mount
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh()
+    }, 100)
+    return () => clearTimeout(timer)
+  }, [])
 
   return (
     <div className="app-container">
@@ -17,9 +27,7 @@ export default function App() {
 
       {/* Fixed UI Overlay Layers */}
       <Navigation />
-      <HeroContent scrollTriggerElement="#scroll-track" />
-      <AboutContent scrollTriggerElement="#scroll-track" />
-      <ContactContent scrollTriggerElement="#scroll-track" />
+      <NarrativeOverlay scrollTriggerElement="#scroll-track" />
       <PhaseIndicator scrollTriggerElement="#scroll-track" />
       <ScrollIndicator scrollTriggerElement="#scroll-track" />
 

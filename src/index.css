@@ -1,26 +1,39 @@
+/* ==========================================================================
+   DESIGN TOKENS & ROOT VARIABLES
+   ========================================================================== */
 :root {
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-
-  --bg-primary: #05070f;
-  --bg-secondary: #0c1021;
-  --bg-card: rgba(14, 20, 40, 0.65);
-  --bg-glass: rgba(255, 255, 255, 0.04);
-
+  /* Core Brand Colors */
+  --bg-deep-space: #02040a;
+  --bg-space: #050814;
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
 
-  --accent-cyan: #06b6d4;
-  --accent-violet: #8b5cf6;
-  --accent-blue: #3b82f6;
-  --accent-glow: rgba(6, 182, 212, 0.25);
+  /* Restrained Atmospheric Cyan & Stellar Accents */
+  --accent-cyan: #38bdf8;
+  --accent-cyan-glow: rgba(56, 189, 248, 0.4);
+  --accent-blue: #2563eb;
+  --earth-limb-glow: rgba(56, 189, 248, 0.15);
 
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-highlight: rgba(255, 255, 255, 0.18);
+  /* Architectural Borders & Translucent Surfaces */
+  --surface-glass: rgba(10, 15, 30, 0.55);
+  --surface-glass-border: rgba(255, 255, 255, 0.08);
+  --border-subtle: rgba(255, 255, 255, 0.1);
+  --border-highlight: rgba(56, 189, 248, 0.35);
+
+  /* Typography Stacks */
+  --font-heading: 'Syne', sans-serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Space Mono', monospace;
+
+  /* Transitions */
+  --ease-cinematic: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-snappy: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* ==========================================================================
+   RESET & BASE STYLES
+   ========================================================================== */
 *,
 *::before,
 *::after {
@@ -29,50 +42,39 @@
   padding: 0;
 }
 
-html,
-body {
+html {
   width: 100%;
   min-height: 100%;
-  background-color: var(--bg-primary);
+  background-color: var(--bg-deep-space);
   color: var(--text-primary);
   font-family: var(--font-sans);
-  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
 
+body {
+  width: 100%;
+  min-height: 100%;
+  background-color: var(--bg-deep-space);
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
 #root {
   width: 100%;
-  min-height: 100vh;
+  min-height: 100%;
   position: relative;
 }
 
-/* Base utility elements */
-a {
-  color: inherit;
-  text-decoration: none;
-}
 
-button {
-  cursor: pointer;
-  font-family: inherit;
-  border: none;
-  background: none;
-}
-
-img,
-svg,
-video,
-canvas {
-  display: block;
-  max-width: 100%;
-}
-
+/* ==========================================================================
+   APP LAYOUT & 3D CANVAS SCENE
+   ========================================================================== */
 .app-container {
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  background-color: var(--bg-deep-space);
 }
 
 .scene-container {
@@ -81,25 +83,35 @@ canvas {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 0;
+  z-index: 1;
   pointer-events: none;
+  overflow: hidden;
 }
 
+.scene-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  outline: none;
+}
+
+/* ==========================================================================
+   SCROLL TRACK & MASTER PROGRESSION
+   ========================================================================== */
 .scroll-track {
   position: relative;
   width: 100%;
-  z-index: 1;
+  height: 900vh;
+  z-index: 2;
+  pointer-events: none;
 }
 
 .scroll-phase {
   width: 100%;
   height: 100vh;
-  position: relative;
-  box-sizing: border-box;
 }
 
 /* ==========================================================================
-   TOP NAVIGATION
+   NAVIGATION BAR
    ========================================================================== */
 .top-nav {
   position: fixed;
@@ -107,79 +119,83 @@ canvas {
   left: 0;
   width: 100%;
   z-index: 50;
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 .nav-container {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 32px clamp(24px, 5vw, 64px);
-  max-width: 1680px;
-  margin: 0 auto;
+  justify-content: space-between;
+  padding: 28px clamp(24px, 5vw, 64px);
+  width: 100%;
+  background: linear-gradient(to bottom, rgba(2, 4, 10, 0.7) 0%, rgba(2, 4, 10, 0) 100%);
 }
 
 .nav-logo {
-  pointer-events: auto;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 12px;
-  font-family: var(--font-heading);
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.28em;
+  background: none;
+  border: none;
   color: var(--text-primary);
-  transition: opacity 0.25s ease;
-}
-
-.nav-logo:hover {
-  opacity: 0.85;
+  text-decoration: none;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.22em;
+  cursor: pointer;
+  padding: 4px 0;
 }
 
 .logo-indicator {
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background: var(--accent-cyan);
-  box-shadow: 0 0 10px var(--accent-cyan);
+  background-color: var(--accent-cyan);
+  box-shadow: 0 0 10px var(--accent-cyan-glow);
+  animation: pulseIndicator 3s ease-in-out infinite alternate;
+}
+
+@keyframes pulseIndicator {
+  0% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
 }
 
 .logo-sub {
   font-family: var(--font-mono);
   font-size: 10px;
-  letter-spacing: 0.18em;
   color: var(--text-muted);
-  font-weight: 400;
-  padding-left: 6px;
-  border-left: 1px solid var(--border-subtle);
+  letter-spacing: 0.18em;
+  margin-left: 2px;
 }
 
 .nav-links ul {
   display: flex;
-  list-style: none;
-  gap: clamp(20px, 3.5vw, 44px);
   align-items: center;
+  gap: 32px;
+  list-style: none;
 }
 
 .nav-item {
-  pointer-events: auto;
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 6px;
-  font-family: var(--font-heading);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.22em;
+  gap: 8px;
+  background: none;
+  border: none;
   color: var(--text-secondary);
-  transition: color 0.25s ease;
-  padding: 6px 0;
-  position: relative;
-}
-
-.nav-index {
   font-family: var(--font-mono);
-  font-size: 9px;
-  color: var(--text-muted);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  cursor: pointer;
+  padding: 4px 0;
+  position: relative;
+  transition: color 0.25s ease;
 }
 
 .nav-item:hover,
@@ -187,15 +203,20 @@ canvas {
   color: var(--text-primary);
 }
 
+.nav-index {
+  color: var(--text-muted);
+  font-size: 9px;
+}
+
 .nav-item::after {
   content: '';
   position: absolute;
-  bottom: 0;
+  bottom: -4px;
   left: 0;
-  width: 0;
+  width: 0%;
   height: 1px;
   background: var(--accent-cyan);
-  transition: width 0.25s ease;
+  transition: width 0.25s var(--ease-snappy);
 }
 
 .nav-item:hover::after,
@@ -204,19 +225,19 @@ canvas {
 }
 
 /* ==========================================================================
-   NARRATIVE OVERLAYS (HERO CONTENT)
+   UNIFIED NARRATIVE MASTER LAYER (STAGES 01 THROUGH 09)
    ========================================================================== */
-.narrative-overlay {
+.narrative-master-layer {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 20;
+  z-index: 22;
   pointer-events: none;
   display: flex;
   align-items: center;
-  padding-left: clamp(24px, 6vw, 100px);
+  padding-left: clamp(24px, 8vw, 120px);
   padding-right: 24px;
 }
 
@@ -224,8 +245,21 @@ canvas {
   position: absolute;
   display: flex;
   flex-direction: column;
-  gap: 22px;
-  max-width: 580px;
+  gap: 18px;
+  max-width: 560px;
+  will-change: transform, opacity;
+}
+
+.narrative-section.stage-left {
+  left: clamp(24px, 8vw, 120px);
+}
+
+.narrative-section.stage-center {
+  left: 50%;
+  transform: translate(-50%, 0);
+  align-items: center;
+  text-align: center;
+  max-width: 680px;
 }
 
 .narrative-badge {
@@ -249,7 +283,7 @@ canvas {
 
 .narrative-heading {
   font-family: var(--font-heading);
-  font-size: clamp(40px, 5.2vw, 76px);
+  font-size: clamp(38px, 5.2vw, 76px);
   font-weight: 700;
   line-height: 0.98;
   letter-spacing: -0.035em;
@@ -258,25 +292,135 @@ canvas {
   margin: 0;
 }
 
-.narrative-subheading {
-  display: block;
-  font-size: clamp(24px, 3.2vw, 44px);
-  font-weight: 500;
-  color: var(--text-muted);
-  letter-spacing: -0.02em;
+/* Stage 08: About Kishor */
+.narrative-section.about-card {
+  max-width: 580px;
+  gap: 22px;
+}
+
+.about-heading {
+  font-family: var(--font-heading);
+  font-size: clamp(38px, 5.2vw, 72px);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.about-lead {
+  font-family: var(--font-sans);
+  font-size: clamp(15px, 1.25vw, 18px);
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin: 0;
+  max-width: 480px;
+}
+
+.about-details {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 4px;
+}
+
+.about-focus-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.focus-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--accent-cyan);
+  text-transform: uppercase;
+}
+
+.focus-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tech-pill {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  color: var(--text-primary);
+  padding: 5px 12px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+}
+
+/* Stage 09: Contact */
+.narrative-section.contact-card {
+  max-width: 680px;
+  gap: 22px;
+}
+
+.contact-heading {
+  font-family: var(--font-heading);
+  font-size: clamp(38px, 5.2vw, 76px);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.contact-lead {
+  font-family: var(--font-sans);
+  font-size: clamp(14px, 1.15vw, 17px);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 440px;
+}
+
+.contact-links-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
   margin-top: 8px;
 }
 
+.contact-link-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: none;
+  padding: 9px 18px;
+  border-radius: 4px;
+  background: rgba(56, 189, 248, 0.06);
+  border: 1px solid rgba(56, 189, 248, 0.24);
+  pointer-events: auto;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
 
-.narrative-body {
-  font-family: var(--font-sans);
-  font-size: clamp(14px, 1.15vw, 16px);
-  color: var(--text-secondary);
-  line-height: 1.68;
-  max-width: 440px;
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  margin: 0;
+.contact-link-pill:hover {
+  background: rgba(56, 189, 248, 0.16);
+  border-color: rgba(56, 189, 248, 0.55);
+  transform: translateY(-2px);
+}
+
+.contact-link-pill:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 3px;
 }
 
 /* ==========================================================================
@@ -396,317 +540,20 @@ canvas {
 }
 
 /* ==========================================================================
-   WORK NARRATIVE & 3D PROJECT OVERLAYS
-   ========================================================================== */
-.work-narrative-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 25;
-  pointer-events: none;
-  display: flex;
-  align-items: center;
-  padding: 0 clamp(24px, 6vw, 100px);
-}
-
-.work-card {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  max-width: 500px;
-}
-
-.work-card.project-card {
-  padding: 24px 28px;
-  background: rgba(5, 7, 15, 0.4);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
-}
-
-.work-card.align-right {
-  right: clamp(24px, 6vw, 100px);
-}
-
-.work-heading {
-  font-family: var(--font-heading);
-  font-size: clamp(38px, 4.8vw, 68px);
-  font-weight: 700;
-  line-height: 0.98;
-  letter-spacing: -0.035em;
-  color: var(--text-primary);
-  text-transform: uppercase;
-  margin: 0;
-}
-
-.project-title {
-  font-family: var(--font-heading);
-  font-size: clamp(28px, 3.4vw, 44px);
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  line-height: 1.05;
-  color: var(--text-primary);
-  text-transform: uppercase;
-  margin: 0;
-}
-
-.project-meta-line {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  color: var(--text-muted);
-  text-transform: uppercase;
-}
-
-.project-subtitle {
-  color: var(--text-secondary);
-  font-weight: 500;
-}
-
-.project-desc {
-  font-family: var(--font-sans);
-  font-size: clamp(13px, 1.05vw, 15px);
-  color: var(--text-secondary);
-  line-height: 1.65;
-  margin: 0;
-}
-
-.tech-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 4px;
-}
-
-.tech-pill {
-  display: inline-flex;
-  align-items: center;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  color: var(--text-primary);
-  padding: 4px 10px;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border-subtle);
-}
-
-.project-actions {
-  margin-top: 8px;
-}
-
-.project-link-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  font-weight: 600;
-  color: var(--text-primary);
-  text-decoration: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  background: rgba(56, 189, 248, 0.08);
-  border: 1px solid rgba(56, 189, 248, 0.28);
-  pointer-events: auto;
-  cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-}
-
-.project-link-btn:hover {
-  background: rgba(56, 189, 248, 0.18);
-  border-color: rgba(56, 189, 248, 0.6);
-  transform: translateY(-1px);
-}
-
-.project-link-btn:focus-visible {
-  outline: 2px solid var(--accent-cyan);
-  outline-offset: 3px;
-}
-
-
-/* ==========================================================================
-   ABOUT ME EDITORIAL OVERLAY
-   ========================================================================== */
-.about-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 22;
-  pointer-events: none;
-  display: flex;
-  align-items: center;
-  padding-left: clamp(24px, 8vw, 120px);
-  padding-right: 24px;
-}
-
-.about-content-card {
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-  max-width: 580px;
-}
-
-.about-heading {
-  font-family: var(--font-heading);
-  font-size: clamp(38px, 5.2vw, 72px);
-  font-weight: 700;
-  line-height: 0.98;
-  letter-spacing: -0.035em;
-  color: var(--text-primary);
-  text-transform: uppercase;
-  margin: 0;
-}
-
-.about-lead {
-  font-family: var(--font-sans);
-  font-size: clamp(15px, 1.25vw, 18px);
-  color: var(--text-secondary);
-  line-height: 1.65;
-  margin: 0;
-  max-width: 480px;
-}
-
-.about-details {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  margin-top: 6px;
-}
-
-.about-focus-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.focus-label {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  color: var(--accent-cyan);
-  text-transform: uppercase;
-}
-
-.focus-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-/* ==========================================================================
-   CONTACT EDITORIAL OVERLAY
-   ========================================================================== */
-.contact-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 22;
-  pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 0 clamp(24px, 6vw, 100px);
-}
-
-.contact-content-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 22px;
-  max-width: 680px;
-}
-
-.contact-heading {
-  font-family: var(--font-heading);
-  font-size: clamp(38px, 5.2vw, 76px);
-  font-weight: 700;
-  line-height: 0.98;
-  letter-spacing: -0.035em;
-  color: var(--text-primary);
-  text-transform: uppercase;
-  margin: 0;
-}
-
-.contact-lead {
-  font-family: var(--font-sans);
-  font-size: clamp(14px, 1.15vw, 17px);
-  color: var(--text-secondary);
-  line-height: 1.6;
-  margin: 0;
-  max-width: 440px;
-}
-
-.contact-links-group {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 8px;
-}
-
-.contact-link-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  font-weight: 600;
-  color: var(--text-primary);
-  text-decoration: none;
-  padding: 9px 18px;
-  border-radius: 4px;
-  background: rgba(56, 189, 248, 0.06);
-  border: 1px solid rgba(56, 189, 248, 0.24);
-  pointer-events: auto;
-  cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-}
-
-.contact-link-pill:hover {
-  background: rgba(56, 189, 248, 0.16);
-  border-color: rgba(56, 189, 248, 0.55);
-  transform: translateY(-2px);
-}
-
-.contact-link-pill:focus-visible {
-  outline: 2px solid var(--accent-cyan);
-  outline-offset: 3px;
-}
-
-/* ==========================================================================
    RESPONSIVE DESIGN BREAKPOINTS
    ========================================================================== */
-
-
 @media (max-width: 1024px) {
-  .narrative-overlay,
-  .work-narrative-overlay,
-  .about-overlay {
+  .narrative-master-layer {
     padding-left: clamp(24px, 5vw, 48px);
     padding-right: clamp(24px, 5vw, 48px);
   }
 
-  .narrative-section,
-  .work-card,
-  .about-content-card {
-    max-width: 420px;
+  .narrative-section.stage-left {
+    left: clamp(24px, 5vw, 48px);
+  }
+
+  .narrative-section {
+    max-width: 440px;
     gap: 14px;
   }
 
@@ -733,39 +580,41 @@ canvas {
     display: none;
   }
 
-  .narrative-overlay,
-  .work-narrative-overlay,
-  .about-overlay {
+  .narrative-master-layer {
     padding-left: 20px;
     padding-right: 20px;
     align-items: flex-start;
     padding-top: 96px;
   }
 
-  .work-card.align-right {
-    right: auto;
+  .narrative-section.stage-left {
     left: 20px;
+    right: 20px;
+    max-width: calc(100vw - 40px);
   }
 
-  .narrative-section,
-  .work-card,
-  .about-content-card {
+  .narrative-section.stage-center {
+    left: 20px;
+    right: 20px;
+    transform: none;
+    align-items: flex-start;
+    text-align: left;
+    max-width: calc(100vw - 40px);
+  }
+
+  .narrative-section {
     max-width: 100%;
     gap: 12px;
   }
 
-  .work-card.project-card {
-    padding: 20px 20px;
-  }
-
   .narrative-heading,
-  .work-heading,
   .about-heading,
   .contact-heading {
     font-size: clamp(30px, 7.5vw, 42px);
     line-height: 1.05;
   }
 
+  .about-lead,
   .contact-lead {
     font-size: 13.5px;
     max-width: 100%;
@@ -781,23 +630,6 @@ canvas {
     width: 100%;
     justify-content: center;
     padding: 10px 16px;
-  }
-
-  .about-lead {
-    font-size: 14px;
-    max-width: 100%;
-  }
-
-
-
-  .project-title {
-    font-size: clamp(24px, 6vw, 32px);
-  }
-
-  .narrative-body,
-  .project-desc {
-    font-size: 13.5px;
-    max-width: 100%;
   }
 
   .phase-indicator {
@@ -820,7 +652,7 @@ canvas {
 }
 
 /* ==========================================================================
-   ACCESSIBILITY & FOCUS
+   ACCESSIBILITY & FOCUS & REDUCED MOTION
    ========================================================================== */
 a:focus-visible,
 button:focus-visible {
@@ -838,9 +670,3 @@ button:focus-visible {
     scroll-behavior: auto !important;
   }
 }
-
-
-
-
-
-
