@@ -98,5 +98,390 @@ canvas {
   box-sizing: border-box;
 }
 
+/* ==========================================================================
+   TOP NAVIGATION
+   ========================================================================== */
+.top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32px clamp(24px, 5vw, 64px);
+  max-width: 1680px;
+  margin: 0 auto;
+}
+
+.nav-logo {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  color: var(--text-primary);
+  transition: opacity 0.25s ease;
+}
+
+.nav-logo:hover {
+  opacity: 0.85;
+}
+
+.logo-indicator {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  box-shadow: 0 0 10px var(--accent-cyan);
+}
+
+.logo-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+  font-weight: 400;
+  padding-left: 6px;
+  border-left: 1px solid var(--border-subtle);
+}
+
+.nav-links ul {
+  display: flex;
+  list-style: none;
+  gap: clamp(20px, 3.5vw, 44px);
+  align-items: center;
+}
+
+.nav-item {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: var(--text-secondary);
+  transition: color 0.25s ease;
+  padding: 6px 0;
+  position: relative;
+}
+
+.nav-index {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+.nav-item:hover,
+.nav-item:focus-visible {
+  color: var(--text-primary);
+}
+
+.nav-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--accent-cyan);
+  transition: width 0.25s ease;
+}
+
+.nav-item:hover::after,
+.nav-item:focus-visible::after {
+  width: 100%;
+}
+
+/* ==========================================================================
+   NARRATIVE OVERLAYS (HERO CONTENT)
+   ========================================================================== */
+.narrative-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 20;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  padding-left: clamp(24px, 6vw, 100px);
+  padding-right: 24px;
+}
+
+.narrative-section {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  max-width: 580px;
+}
+
+.narrative-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.26em;
+  color: var(--accent-cyan);
+  text-transform: uppercase;
+}
+
+.badge-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  box-shadow: 0 0 8px var(--accent-cyan);
+}
+
+.narrative-heading {
+  font-family: var(--font-heading);
+  font-size: clamp(40px, 5.2vw, 76px);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.narrative-body {
+  font-family: var(--font-sans);
+  font-size: clamp(14px, 1.15vw, 16px);
+  color: var(--text-secondary);
+  line-height: 1.68;
+  max-width: 440px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+
+/* ==========================================================================
+   MICRO UI: PHASE INDICATOR & TELEMETRY
+   ========================================================================== */
+.phase-indicator {
+  position: fixed;
+  bottom: 36px;
+  left: clamp(24px, 5vw, 64px);
+  z-index: 30;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+}
+
+.phase-telemetry {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.phase-number {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.telemetry-separator {
+  color: var(--border-highlight);
+}
+
+.phase-name {
+  color: var(--accent-cyan);
+  font-weight: 500;
+}
+
+.phase-progress-bar {
+  width: 140px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.phase-progress-fill {
+  width: 100%;
+  height: 100%;
+  background: var(--accent-cyan);
+  transform-origin: left;
+  transform: scaleX(0);
+  box-shadow: 0 0 6px var(--accent-cyan);
+  transition: transform 0.05s linear;
+}
+
+.phase-coord {
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 0.15em;
+}
+
+/* ==========================================================================
+   MICRO UI: SCROLL INDICATOR
+   ========================================================================== */
+.scroll-hint {
+  position: fixed;
+  bottom: 36px;
+  right: clamp(24px, 5vw, 64px);
+  z-index: 30;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.scroll-text {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: var(--text-muted);
+}
+
+.scroll-line {
+  width: 1px;
+  height: 36px;
+  background: linear-gradient(to bottom, var(--border-highlight), transparent);
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll-dot {
+  position: absolute;
+  top: 0;
+  left: -1px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  animation: scrollPulse 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes scrollPulse {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN BREAKPOINTS
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .narrative-overlay {
+    padding-left: clamp(24px, 5vw, 48px);
+  }
+
+  .narrative-section {
+    max-width: 460px;
+    gap: 16px;
+  }
+
+  .phase-indicator,
+  .scroll-hint {
+    bottom: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-container {
+    padding: 20px 20px;
+  }
+
+  .logo-sub {
+    display: none;
+  }
+
+  .nav-links ul {
+    gap: 18px;
+  }
+
+  .nav-index {
+    display: none;
+  }
+
+  .narrative-overlay {
+    padding-left: 20px;
+    padding-right: 20px;
+    align-items: flex-start;
+    padding-top: 100px;
+  }
+
+  .narrative-section {
+    max-width: 100%;
+    gap: 14px;
+  }
+
+  .narrative-heading {
+    font-size: clamp(32px, 8vw, 44px);
+    line-height: 1.05;
+  }
+
+  .narrative-body {
+    font-size: 14px;
+    max-width: 100%;
+  }
+
+  .phase-indicator {
+    bottom: 20px;
+    left: 20px;
+  }
+
+  .phase-coord {
+    display: none;
+  }
+
+  .scroll-hint {
+    bottom: 20px;
+    right: 20px;
+  }
+
+  .scroll-text {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   ACCESSIBILITY & FOCUS
+   ========================================================================== */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
 
 
