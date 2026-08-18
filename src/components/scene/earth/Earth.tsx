@@ -6,7 +6,11 @@ import { EarthClouds } from './EarthClouds'
 import { EarthAtmosphere } from './EarthAtmosphere'
 import { Humanity } from '../humanity/Humanity'
 
-export function Earth() {
+export interface EarthProps {
+  scrollTriggerElement?: HTMLElement | string | null
+}
+
+export function Earth({ scrollTriggerElement }: EarthProps) {
   const userRotationGroupRef = useRef<THREE.Group>(null!)
 
   // Fixed celestial sun position matching key directional light
@@ -120,7 +124,7 @@ export function Earth() {
         <EarthAtmosphere radius={2.008} sunPosition={sunPosition} />
 
         {/* Subtle Signs of Human Civilization & Connections */}
-        <Humanity radius={2.008} />
+        <Humanity radius={2.008} scrollTriggerElement={scrollTriggerElement} />
 
         {/* Interactive Desktop Drag Hit Sphere */}
         <mesh
@@ -137,3 +141,4 @@ export function Earth() {
     </group>
   )
 }
+

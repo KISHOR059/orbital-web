@@ -1,18 +1,15 @@
 import { CityMarkers } from './CityMarkers'
-import { ConnectionNetwork } from './ConnectionNetwork'
 
 export interface HumanityProps {
   radius?: number
+  scrollTriggerElement?: HTMLElement | string | null
 }
 
-export function Humanity({ radius = 2.008 }: HumanityProps) {
+export function Humanity({ radius = 2.008, scrollTriggerElement }: HumanityProps) {
   return (
     <group name="humanity-layer">
-      {/* 1. Subtle Global City Light Markers */}
-      <CityMarkers radius={radius} />
-
-      {/* 2. Elevated Great-Circle Routes with Data Signals and Destination Pulses */}
-      <ConnectionNetwork radius={radius} />
+      {/* Subtle Individual Global City Civilization Light Markers */}
+      <CityMarkers radius={radius} scrollTriggerElement={scrollTriggerElement} />
     </group>
   )
 }

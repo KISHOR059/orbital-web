@@ -67,7 +67,7 @@ export function Scene({ scrollTriggerElement }: SceneProps) {
 
         {/* Cinematic 3D Earth System */}
         <Suspense fallback={null}>
-          <Earth />
+          <Earth scrollTriggerElement={scrollTriggerElement} />
         </Suspense>
 
         {/* Abstract Digital Technology Space */}
