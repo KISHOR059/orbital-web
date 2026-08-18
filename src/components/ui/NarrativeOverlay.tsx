@@ -33,7 +33,7 @@ export function NarrativeOverlay({ scrollTriggerElement = '#scroll-track' }: Nar
     const trigger = scrollTriggerElement || '#scroll-track'
 
     const ctx = gsap.context(() => {
-      // Initialize starting visual states using GPU accelerated transforms & opacity
+      // Initialize starting visual states with GPU-accelerated transforms
       gsap.set(s1Ref.current, { opacity: 1, y: 0, scale: 1, force3D: true })
       gsap.set(
         [
@@ -48,7 +48,7 @@ export function NarrativeOverlay({ scrollTriggerElement = '#scroll-track' }: Nar
         ],
         {
           opacity: 0,
-          y: 35,
+          y: 40,
           scale: 0.97,
           force3D: true,
         }
@@ -65,9 +65,8 @@ export function NarrativeOverlay({ scrollTriggerElement = '#scroll-track' }: Nar
         },
       })
 
-      // Helper function for strict non-overlapping fade transitions
-      // Every stage fades completely to 0 before the next begins
-      const fadeInOut = (
+      // Helper for clean, non-overlapping cinematic fade transitions
+      const animateStage = (
         el: HTMLElement | null,
         inStart: number,
         inEnd: number,
@@ -75,41 +74,46 @@ export function NarrativeOverlay({ scrollTriggerElement = '#scroll-track' }: Nar
         outEnd: number
       ) => {
         if (!el) return
-        tl.to(el, { opacity: 1, y: 0, scale: 1, ease: 'power1.out', duration: inEnd - inStart }, inStart)
-        tl.to(el, { opacity: 0, y: -35, scale: 1.02, ease: 'power1.in', duration: outEnd - outStart }, outStart)
+        tl.to(
+          el,
+          { opacity: 1, y: 0, scale: 1, ease: 'power2.out', duration: inEnd - inStart },
+          inStart
+        )
+        tl.to(
+          el,
+          { opacity: 0, y: -40, scale: 1.02, ease: 'power2.in', duration: outEnd - outStart },
+          outStart
+        )
       }
 
       // STAGE 01: Deep Space (0.0 -> 1.8 units)
-      tl.to(s1Ref.current, { opacity: 0, y: -35, scale: 1.02, ease: 'power1.in', duration: 0.6 }, 1.2)
+      tl.to(s1Ref.current, { opacity: 0, y: -40, scale: 1.02, ease: 'power2.in', duration: 0.6 }, 1.2)
 
       // STAGE 02: One World (2.2 -> 3.8 units)
-      fadeInOut(s2Ref.current, 2.2, 2.8, 3.2, 3.8)
+      animateStage(s2Ref.current, 2.2, 2.8, 3.2, 3.8)
 
       // STAGE 03: Countless Stories (4.2 -> 5.8 units)
-      fadeInOut(s3Ref.current, 4.2, 4.8, 5.2, 5.8)
+      animateStage(s3Ref.current, 4.2, 4.8, 5.2, 5.8)
 
       // STAGE 04: Humanity (6.2 -> 7.8 units)
-      fadeInOut(s4Ref.current, 6.2, 6.8, 7.2, 7.8)
+      animateStage(s4Ref.current, 6.2, 6.8, 7.2, 7.8)
 
       // STAGE 05: Network (8.2 -> 9.8 units)
-      fadeInOut(s5Ref.current, 8.2, 8.8, 9.2, 9.8)
+      animateStage(s5Ref.current, 8.2, 8.8, 9.2, 9.8)
 
       // STAGE 06: Data Flows (10.2 -> 12.0 units)
-      fadeInOut(s6Ref.current, 10.2, 10.8, 11.4, 12.0)
+      animateStage(s6Ref.current, 10.2, 10.8, 11.4, 12.0)
 
-      // STAGE 07: Technology (12.4 -> 14.4 units)
-      // Completely reaches 0.0 opacity by 14.4 units
-      fadeInOut(s7Ref.current, 12.4, 13.0, 13.8, 14.4)
+      // STAGE 07: Technology (12.4 -> 14.4 units) - Completely 0 opacity by 14.4
+      animateStage(s7Ref.current, 12.4, 13.0, 13.8, 14.4)
 
-      // STAGE 08: About Me (14.8 -> 17.0 units)
-      // Starts at 14.8 (after Technology is 100% gone) and reaches 0.0 opacity by 17.0
-      fadeInOut(s8Ref.current, 14.8, 15.4, 16.4, 17.0)
+      // STAGE 08: About Me (14.8 -> 17.0 units) - Starts at 14.8, completely 0 opacity by 17.0
+      animateStage(s8Ref.current, 14.8, 15.4, 16.4, 17.0)
 
-      // STAGE 09: Contact (17.4 -> 20.0 units)
-      // Starts at 17.4 and settles as the final closing composition
+      // STAGE 09: Contact (17.4 -> 20.0 units) - Settles as the serene finale
       tl.to(
         s9Ref.current,
-        { opacity: 1, y: 0, scale: 1, ease: 'power1.out', duration: 0.8 },
+        { opacity: 1, y: 0, scale: 1, ease: 'power2.out', duration: 0.8 },
         17.4
       )
     }, containerRef)
@@ -128,9 +132,9 @@ export function NarrativeOverlay({ scrollTriggerElement = '#scroll-track' }: Nar
           <span>01 // DEEP SPACE</span>
         </div>
         <h1 className="narrative-heading">
-          BUILDING<br />
-          DIGITAL<br />
-          WORLDS.
+          <span className="heading-line">BUILDING</span>
+          <span className="heading-line">DIGITAL</span>
+          <span className="heading-line">WORLDS.</span>
         </h1>
       </section>
 
@@ -141,8 +145,8 @@ export function NarrativeOverlay({ scrollTriggerElement = '#scroll-track' }: Nar
           <span>02 // EARTH</span>
         </div>
         <h2 className="narrative-heading">
-          ONE<br />
-          WORLD.
+          <span className="heading-line">ONE</span>
+          <span className="heading-line">WORLD.</span>
         </h2>
       </section>
 
@@ -153,8 +157,8 @@ export function NarrativeOverlay({ scrollTriggerElement = '#scroll-track' }: Nar
           <span>03 // CONTINENTS</span>
         </div>
         <h2 className="narrative-heading">
-          COUNTLESS<br />
-          STORIES.
+          <span className="heading-line">COUNTLESS</span>
+          <span className="heading-line">STORIES.</span>
         </h2>
       </section>
 
@@ -165,8 +169,8 @@ export function NarrativeOverlay({ scrollTriggerElement = '#scroll-track' }: Nar
           <span>04 // HUMANITY</span>
         </div>
         <h2 className="narrative-heading">
-          WE<br />
-          CONNECT.
+          <span className="heading-line">WE</span>
+          <span className="heading-line">CONNECT.</span>
         </h2>
       </section>
 
@@ -177,8 +181,8 @@ export function NarrativeOverlay({ scrollTriggerElement = '#scroll-track' }: Nar
           <span>05 // NETWORK</span>
         </div>
         <h2 className="narrative-heading">
-          IDEAS<br />
-          MOVE.
+          <span className="heading-line">IDEAS</span>
+          <span className="heading-line">MOVE.</span>
         </h2>
       </section>
 
@@ -189,8 +193,8 @@ export function NarrativeOverlay({ scrollTriggerElement = '#scroll-track' }: Nar
           <span>06 // DATA</span>
         </div>
         <h2 className="narrative-heading">
-          DATA<br />
-          FLOWS.
+          <span className="heading-line">DATA</span>
+          <span className="heading-line">FLOWS.</span>
         </h2>
       </section>
 
@@ -201,9 +205,9 @@ export function NarrativeOverlay({ scrollTriggerElement = '#scroll-track' }: Nar
           <span>07 // TECHNOLOGY</span>
         </div>
         <h2 className="narrative-heading">
-          TECHNOLOGY<br />
-          BRINGS IT<br />
-          TOGETHER.
+          <span className="heading-line">TECHNOLOGY</span>
+          <span className="heading-line">BRINGS IT</span>
+          <span className="heading-line">TOGETHER.</span>
         </h2>
       </section>
 
@@ -213,7 +217,10 @@ export function NarrativeOverlay({ scrollTriggerElement = '#scroll-track' }: Nar
           <span className="badge-dot" />
           <span>08 // ABOUT</span>
         </div>
-        <h2 className="about-heading">{ABOUT_DATA.greeting}</h2>
+        <h2 className="about-heading">
+          <span className="heading-line">HI, I'M</span>
+          <span className="heading-line">KISHOR.</span>
+        </h2>
         <p className="about-lead">{ABOUT_DATA.lead}</p>
         <div className="about-details">
           <div className="about-focus-group">
@@ -236,9 +243,9 @@ export function NarrativeOverlay({ scrollTriggerElement = '#scroll-track' }: Nar
           <span>09 // CONTACT</span>
         </div>
         <h2 className="contact-heading">
-          LET'S BUILD<br />
-          SOMETHING<br />
-          INTERESTING.
+          <span className="heading-line">LET'S BUILD</span>
+          <span className="heading-line">SOMETHING</span>
+          <span className="heading-line">INTERESTING.</span>
         </h2>
         <p className="contact-lead">Have an idea, a project, or simply want to talk?</p>
         <nav className="contact-links-group" aria-label="Direct Contact Links">

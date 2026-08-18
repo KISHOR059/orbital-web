@@ -292,6 +292,10 @@ body {
   margin: 0;
 }
 
+.heading-line {
+  display: block;
+}
+
 /* Stage 08: About Kishor */
 .narrative-section.about-card {
   max-width: 580px;
@@ -412,16 +416,25 @@ body {
   transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
+.contact-link-pill svg {
+  transition: transform 0.2s ease;
+}
+
 .contact-link-pill:hover {
   background: rgba(56, 189, 248, 0.16);
   border-color: rgba(56, 189, 248, 0.55);
   transform: translateY(-2px);
 }
 
+.contact-link-pill:hover svg {
+  transform: translate(2px, -2px);
+}
+
 .contact-link-pill:focus-visible {
   outline: 2px solid var(--accent-cyan);
   outline-offset: 3px;
 }
+
 
 /* ==========================================================================
    MICRO UI: PHASE INDICATOR & TELEMETRY

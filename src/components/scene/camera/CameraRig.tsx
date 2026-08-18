@@ -31,12 +31,12 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
     fov: isMobile ? 46 : 40,
   })
 
-  // Current interpolated values for silky smooth damping
+  // Pre-allocated persistent vectors for zero GC overhead during frame loops
   const currentPos = useRef(new THREE.Vector3(0, 0.4, 13.5 * distanceMultiplier))
   const currentTarget = useRef(new THREE.Vector3(0, 0, 0))
 
   useLayoutEffect(() => {
-    const trigger = scrollTriggerElement || document.body
+    const trigger = scrollTriggerElement || '#scroll-track'
     const mult = distanceMultiplier
     const baseFov = isMobile ? 46 : 40
 
@@ -50,18 +50,18 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
     camState.current.fov = baseFov
 
     const ctx = gsap.context(() => {
-      // Master ScrollTrigger timeline spanning Deep Space -> Earth -> Humanity -> Technology -> About -> Contact (0 to 20 units)
+      // Master ScrollTrigger timeline spanning all 9 narrative phases (0 to 20 units)
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: trigger,
           start: 'top top',
           end: 'bottom bottom',
-          scrub: 1.2, // Smooth inertial scrub
+          scrub: 1.2, // Silk-smooth inertial scrub
           invalidateOnRefresh: true,
         },
       })
 
-      // 1. STAGE 01: Deep Space (0 -> 2 units)
+      // 1. STAGE 01: Deep Space (0 -> 2 units) - Floating distant perspective
       tl.to(
         camState.current,
         {
@@ -78,7 +78,7 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
         0
       )
 
-      // 2. STAGE 02: One World (2 -> 4 units)
+      // 2. STAGE 02: One World (2 -> 4 units) - Cinematic lateral orbital glide
       tl.to(
         camState.current,
         {
@@ -89,13 +89,13 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
           targetY: 0,
           targetZ: 0,
           fov: baseFov - 2,
-          ease: 'power1.inOut',
+          ease: 'power2.inOut',
           duration: 2.0,
         },
         2.0
       )
 
-      // 3. STAGE 03: Countless Stories (4 -> 6 units)
+      // 3. STAGE 03: Countless Stories (4 -> 6 units) - Sweeping closer to planetary limb
       tl.to(
         camState.current,
         {
@@ -112,7 +112,7 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
         4.0
       )
 
-      // 4. STAGE 04: Humanity & Civilization Network (6 -> 8 units)
+      // 4. STAGE 04: Humanity (6 -> 8 units) - Intimate view of global civilization
       tl.to(
         camState.current,
         {
@@ -129,7 +129,7 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
         6.0
       )
 
-      // 5. STAGE 05: Ideas Move / Network Flow (8 -> 10 units)
+      // 5. STAGE 05: Ideas Move (8 -> 10 units) - Skimming across connection light arcs
       tl.to(
         camState.current,
         {
@@ -140,13 +140,13 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
           targetY: 0.01,
           targetZ: 0,
           fov: baseFov - 4,
-          ease: 'power1.inOut',
+          ease: 'power2.inOut',
           duration: 2.0,
         },
         8.0
       )
 
-      // 6. STAGE 06: Data Flows / Descent past Earth into Digital Space (10 -> 12 units)
+      // 6. STAGE 06: Data Flows (10 -> 12 units) - Descent through network into digital space
       tl.to(
         camState.current,
         {
@@ -178,7 +178,7 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
         11.0
       )
 
-      // 7. STAGE 07: Technology Brings It Together (12 -> 14 units)
+      // 7. STAGE 07: Technology (12 -> 14 units) - Deep atmospheric digital coordinate plane
       tl.to(
         camState.current,
         {
@@ -189,13 +189,13 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
           targetY: -28.5,
           targetZ: -60.0,
           fov: baseFov - 3,
-          ease: 'power1.inOut',
+          ease: 'power2.inOut',
           duration: 2.0,
         },
         12.0
       )
 
-      // 8. STAGE 08: About Me (14 -> 17 units)
+      // 8. STAGE 08: About Me (14 -> 17 units) - Deceleration beside Identity Object
       tl.to(
         camState.current,
         {
@@ -212,7 +212,7 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
         14.0
       )
 
-      // 9. STAGE 09: Contact / Final Calm Settled Composition (17 -> 20 units)
+      // 9. STAGE 09: Contact (17 -> 20 units) - Serene finale settling
       tl.to(
         camState.current,
         {
@@ -235,7 +235,7 @@ export function CameraRig({ scrollTriggerElement }: CameraRigProps) {
     }
   }, [scrollTriggerElement, distanceMultiplier, isMobile])
 
-  // Frame loop: smooth interpolation and robust lookAt targeting
+  // Frame loop: smooth damping with lookAt targeting and zero per-frame garbage collection
   useFrame((_, delta) => {
     if (!cameraRef.current) return
 
