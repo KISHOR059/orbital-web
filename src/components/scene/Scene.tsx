@@ -2,7 +2,6 @@ import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Stars } from '@react-three/drei'
 import { Earth } from './earth/Earth'
-import { DigitalWorld } from './digital-world/DigitalWorld'
 import { CameraRig } from './camera/CameraRig'
 
 export interface SceneProps {
@@ -65,11 +64,6 @@ export function Scene({ scrollTriggerElement }: SceneProps) {
         {/* Cinematic 3D Earth System */}
         <Suspense fallback={null}>
           <Earth />
-        </Suspense>
-
-        {/* Abstract 3D Digital World & Project Artifacts */}
-        <Suspense fallback={null}>
-          <DigitalWorld />
         </Suspense>
       </Canvas>
     </div>

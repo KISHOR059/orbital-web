@@ -37,7 +37,7 @@ export function WorkContent({ scrollTriggerElement = '#scroll-track' }: WorkCont
         },
       })
 
-      // Work section timeline corresponds to CameraRig units 10 -> 20 (mapped out of 20 total):
+      // Work section timeline corresponds to CameraRig units 10 -> 20:
 
       // --- WORK INTRO (11.5 -> 14.5 units) ---
       tl.to(
@@ -140,7 +140,7 @@ export function WorkContent({ scrollTriggerElement = '#scroll-track' }: WorkCont
       <section ref={introRef} className="work-card intro-card">
         <div className="narrative-badge">
           <span className="badge-dot" />
-          <span>01 // PORTFOLIO</span>
+          <span>01 / SELECTED WORK</span>
         </div>
         <h2 className="work-heading">
           SELECTED<br />
@@ -153,7 +153,7 @@ export function WorkContent({ scrollTriggerElement = '#scroll-track' }: WorkCont
 
       {/* PROJECT 01 */}
       {p1 && (
-        <section ref={p1Ref} className="work-card project-card">
+        <article ref={p1Ref} className="work-card project-card" aria-label={`Project: ${p1.title}`}>
           <div className="narrative-badge">
             <span className="badge-dot" style={{ background: p1.accentColor, boxShadow: `0 0 8px ${p1.accentColor}` }} />
             <span>PROJECT {p1.number} // {p1.category}</span>
@@ -164,19 +164,33 @@ export function WorkContent({ scrollTriggerElement = '#scroll-track' }: WorkCont
             <span className="project-year">// {p1.year}</span>
           </div>
           <p className="project-desc">{p1.description}</p>
-          <div className="tech-tags">
+          <div className="tech-tags" aria-label="Technologies used">
             {p1.technologies.map((tech) => (
               <span key={tech} className="tech-pill">
                 {tech}
               </span>
             ))}
           </div>
-        </section>
+          <div className="project-actions">
+            <a
+              href={p1.liveUrl || p1.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="project-link-btn"
+              aria-label={`View ${p1.title} project`}
+            >
+              <span>VIEW PROJECT</span>
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4.5M9.5 2.5V7.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </a>
+          </div>
+        </article>
       )}
 
       {/* PROJECT 02 */}
       {p2 && (
-        <section ref={p2Ref} className="work-card project-card align-right">
+        <article ref={p2Ref} className="work-card project-card align-right" aria-label={`Project: ${p2.title}`}>
           <div className="narrative-badge">
             <span className="badge-dot" style={{ background: p2.accentColor, boxShadow: `0 0 8px ${p2.accentColor}` }} />
             <span>PROJECT {p2.number} // {p2.category}</span>
@@ -187,19 +201,33 @@ export function WorkContent({ scrollTriggerElement = '#scroll-track' }: WorkCont
             <span className="project-year">// {p2.year}</span>
           </div>
           <p className="project-desc">{p2.description}</p>
-          <div className="tech-tags">
+          <div className="tech-tags" aria-label="Technologies used">
             {p2.technologies.map((tech) => (
               <span key={tech} className="tech-pill">
                 {tech}
               </span>
             ))}
           </div>
-        </section>
+          <div className="project-actions">
+            <a
+              href={p2.liveUrl || p2.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="project-link-btn"
+              aria-label={`View ${p2.title} project`}
+            >
+              <span>VIEW PROJECT</span>
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4.5M9.5 2.5V7.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </a>
+          </div>
+        </article>
       )}
 
       {/* PROJECT 03 */}
       {p3 && (
-        <section ref={p3Ref} className="work-card project-card">
+        <article ref={p3Ref} className="work-card project-card" aria-label={`Project: ${p3.title}`}>
           <div className="narrative-badge">
             <span className="badge-dot" style={{ background: p3.accentColor, boxShadow: `0 0 8px ${p3.accentColor}` }} />
             <span>PROJECT {p3.number} // {p3.category}</span>
@@ -210,14 +238,28 @@ export function WorkContent({ scrollTriggerElement = '#scroll-track' }: WorkCont
             <span className="project-year">// {p3.year}</span>
           </div>
           <p className="project-desc">{p3.description}</p>
-          <div className="tech-tags">
+          <div className="tech-tags" aria-label="Technologies used">
             {p3.technologies.map((tech) => (
               <span key={tech} className="tech-pill">
                 {tech}
               </span>
             ))}
           </div>
-        </section>
+          <div className="project-actions">
+            <a
+              href={p3.liveUrl || p3.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="project-link-btn"
+              aria-label={`View ${p3.title} project`}
+            >
+              <span>VIEW PROJECT</span>
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4.5M9.5 2.5V7.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </a>
+          </div>
+        </article>
       )}
     </div>
   )

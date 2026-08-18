@@ -4,6 +4,7 @@ import * as THREE from 'three'
 import { EarthSurface } from './EarthSurface'
 import { EarthClouds } from './EarthClouds'
 import { EarthAtmosphere } from './EarthAtmosphere'
+import { EarthHumanity } from './EarthHumanity'
 
 export function Earth() {
   const earthGroupRef = useRef<THREE.Group>(null!)
@@ -24,16 +25,18 @@ export function Earth() {
   return (
     <group rotation={[0, 0, axialTilt]}>
       <group ref={earthGroupRef}>
-        {/* Core Planetary Surface */}
-        <EarthSurface sunPosition={sunPosition} />
+        {/* Core Planetary Surface (Frozen) */}
+        <EarthSurface />
 
-        {/* Independent Dynamic Cloud Layer */}
-        <EarthClouds radius={2.004} sunPosition={sunPosition} />
+        {/* Independent Dynamic Cloud Layer (Frozen) */}
+        <EarthClouds radius={2.004} />
 
-        {/* Cinematic Atmospheric Rayleigh Glow */}
+        {/* Cinematic Atmospheric Rayleigh Glow (Frozen) */}
         <EarthAtmosphere radius={2.008} sunPosition={sunPosition} />
+
+        {/* Subtle Humanity Global Network & Connection Visualization */}
+        <EarthHumanity radius={2.006} />
       </group>
     </group>
   )
 }
-

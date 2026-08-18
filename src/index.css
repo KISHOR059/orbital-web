@@ -258,6 +258,16 @@ canvas {
   margin: 0;
 }
 
+.narrative-subheading {
+  display: block;
+  font-size: clamp(24px, 3.2vw, 44px);
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: -0.02em;
+  margin-top: 8px;
+}
+
+
 .narrative-body {
   font-family: var(--font-sans);
   font-size: clamp(14px, 1.15vw, 16px);
@@ -405,8 +415,18 @@ canvas {
   position: absolute;
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  max-width: 520px;
+  gap: 16px;
+  max-width: 500px;
+}
+
+.work-card.project-card {
+  padding: 24px 28px;
+  background: rgba(5, 7, 15, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
 }
 
 .work-card.align-right {
@@ -426,7 +446,7 @@ canvas {
 
 .project-title {
   font-family: var(--font-heading);
-  font-size: clamp(32px, 3.8vw, 52px);
+  font-size: clamp(28px, 3.4vw, 44px);
   font-weight: 700;
   letter-spacing: -0.025em;
   line-height: 1.05;
@@ -453,7 +473,7 @@ canvas {
 
 .project-desc {
   font-family: var(--font-sans);
-  font-size: clamp(14px, 1.1vw, 16px);
+  font-size: clamp(13px, 1.05vw, 15px);
   color: var(--text-secondary);
   line-height: 1.65;
   margin: 0;
@@ -462,7 +482,7 @@ canvas {
 .tech-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
   margin-top: 4px;
 }
 
@@ -475,10 +495,44 @@ canvas {
   color: var(--text-primary);
   padding: 4px 10px;
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--border-subtle);
-  backdrop-filter: blur(8px);
 }
+
+.project-actions {
+  margin-top: 8px;
+}
+
+.project-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  pointer-events: auto;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.project-link-btn:hover {
+  background: rgba(56, 189, 248, 0.18);
+  border-color: rgba(56, 189, 248, 0.6);
+  transform: translateY(-1px);
+}
+
+.project-link-btn:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 3px;
+}
+
 
 /* ==========================================================================
    RESPONSIVE DESIGN BREAKPOINTS
@@ -492,7 +546,7 @@ canvas {
 
   .narrative-section,
   .work-card {
-    max-width: 440px;
+    max-width: 420px;
     gap: 14px;
   }
 
@@ -524,7 +578,7 @@ canvas {
     padding-left: 20px;
     padding-right: 20px;
     align-items: flex-start;
-    padding-top: 100px;
+    padding-top: 96px;
   }
 
   .work-card.align-right {
@@ -538,25 +592,29 @@ canvas {
     gap: 12px;
   }
 
+  .work-card.project-card {
+    padding: 20px 20px;
+  }
+
   .narrative-heading,
   .work-heading {
-    font-size: clamp(32px, 8vw, 44px);
+    font-size: clamp(30px, 7.5vw, 42px);
     line-height: 1.05;
   }
 
   .project-title {
-    font-size: clamp(26px, 6.5vw, 36px);
+    font-size: clamp(24px, 6vw, 32px);
   }
 
   .narrative-body,
   .project-desc {
-    font-size: 14px;
+    font-size: 13.5px;
     max-width: 100%;
   }
 
   .phase-indicator {
-    bottom: 20px;
-    left: 20px;
+    bottom: 18px;
+    left: 18px;
   }
 
   .phase-coord {
@@ -564,8 +622,8 @@ canvas {
   }
 
   .scroll-hint {
-    bottom: 20px;
-    right: 20px;
+    bottom: 18px;
+    right: 18px;
   }
 
   .scroll-text {
@@ -592,6 +650,7 @@ button:focus-visible {
     scroll-behavior: auto !important;
   }
 }
+
 
 
 

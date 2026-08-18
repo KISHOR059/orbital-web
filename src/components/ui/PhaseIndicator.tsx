@@ -5,15 +5,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 
 const PHASES = [
-  { index: '01 / 08', name: 'DEEP SPACE', coord: 'LAT 00°00\'N // ALT 36,000 KM' },
-  { index: '02 / 08', name: 'APPROACH', coord: 'LAT 12°40\'N // ALT 18,500 KM' },
-  { index: '03 / 08', name: 'ORBITAL FLYBY', coord: 'LAT 24°15\'N // ALT 8,200 KM' },
-  { index: '04 / 08', name: 'PLANETARY VECTOR', coord: 'LAT 37°50\'N // ALT 1,400 KM' },
-  { index: '05 / 08', name: 'DIGITAL INGRESS', coord: 'GRID // SECTOR -25 // LEVEL -40' },
-  { index: '06 / 08', name: 'PROJECT 01', coord: 'NODE // NEXUS OS // POS [-2.5, -28]' },
-  { index: '07 / 08', name: 'PROJECT 02', coord: 'NODE // AETHER // POS [2.8, -35]' },
-  { index: '08 / 08', name: 'PROJECT 03', coord: 'NODE // SYNAPSE // POS [-0.5, -43]' },
+  { index: '01 / 03', name: 'DEEP SPACE', coord: 'LAT 00°00\'N // ALT 36,000 KM' },
+  { index: '02 / 03', name: 'EARTH', coord: 'LAT 24°15\'N // ALT 8,200 KM' },
+  { index: '03 / 03', name: 'HUMANITY', coord: 'GLOBAL NETWORK // 8.1B NODES' },
 ]
+
 
 
 export interface PhaseIndicatorProps {

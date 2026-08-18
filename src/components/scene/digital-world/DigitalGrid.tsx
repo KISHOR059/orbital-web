@@ -5,50 +5,50 @@ import * as THREE from 'three'
 export function DigitalGrid() {
   const linesRef = useRef<THREE.LineSegments>(null!)
 
-  // Procedural geometric grid & coordinate guidelines
+  // Procedural geometric grid & fine coordinate guidelines
   const lineGeometry = useMemo(() => {
     const points: THREE.Vector3[] = []
 
-    const gridSize = 60
-    const step = 4
-    const yLevel = -48
+    const gridSize = 50
+    const step = 5
+    const yLevel = -46
 
     // Longitudinal grid lines
     for (let x = -gridSize / 2; x <= gridSize / 2; x += step) {
-      points.push(new THREE.Vector3(x, yLevel, -35))
-      points.push(new THREE.Vector3(x, yLevel, -110))
+      points.push(new THREE.Vector3(x, yLevel, -38))
+      points.push(new THREE.Vector3(x, yLevel, -100))
     }
 
     // Lateral grid lines
-    for (let z = -35; z >= -110; z -= step) {
+    for (let z = -38; z >= -100; z -= step) {
       points.push(new THREE.Vector3(-gridSize / 2, yLevel, z))
       points.push(new THREE.Vector3(gridSize / 2, yLevel, z))
     }
 
-    // Vertical structural telemetry pillars
-    const pillarCoords = [
-      [-15, -45],
-      [15, -45],
-      [-18, -75],
-      [18, -75],
-      [-12, -100],
-      [12, -100],
+    // Subtle vertical telemetry guide markers
+    const markerCoords = [
+      [-12, -48],
+      [12, -48],
+      [-14, -70],
+      [14, -70],
+      [-8, -92],
+      [8, -92],
     ]
 
-    for (const [px, pz] of pillarCoords) {
+    for (const [px, pz] of markerCoords) {
       points.push(new THREE.Vector3(px, yLevel, pz))
-      points.push(new THREE.Vector3(px, yLevel + 25, pz))
+      points.push(new THREE.Vector3(px, yLevel + 8, pz))
     }
 
     const geometry = new THREE.BufferGeometry().setFromPoints(points)
     return geometry
   }, [])
 
-  // Subtle pulsing grid shimmer
+  // Subtle breathing opacity
   useFrame(({ clock }) => {
     if (linesRef.current) {
       const mat = linesRef.current.material as THREE.LineBasicMaterial
-      mat.opacity = 0.08 + Math.sin(clock.elapsedTime * 0.8) * 0.025
+      mat.opacity = 0.055 + Math.sin(clock.elapsedTime * 0.6) * 0.015
     }
   })
 
@@ -57,7 +57,7 @@ export function DigitalGrid() {
       <lineBasicMaterial
         color="#38bdf8"
         transparent
-        opacity={0.09}
+        opacity={0.06}
         blending={THREE.AdditiveBlending}
         depthWrite={false}
       />

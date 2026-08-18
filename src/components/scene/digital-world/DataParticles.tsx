@@ -2,7 +2,6 @@ import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
-// Deterministic PRNG for pure render compliance
 function createPrng(seed = 1337) {
   let s = seed
   return () => {
@@ -11,7 +10,7 @@ function createPrng(seed = 1337) {
   }
 }
 
-export function DataParticles({ count = 600 }: { count?: number }) {
+export function DataParticles({ count = 500 }: { count?: number }) {
   const pointsRef = useRef<THREE.Points>(null!)
 
   const [positions, colors] = useMemo(() => {
@@ -19,18 +18,17 @@ export function DataParticles({ count = 600 }: { count?: number }) {
     const pos = new Float32Array(count * 3)
     const col = new Float32Array(count * 3)
 
-    const color1 = new THREE.Color('#38bdf8') // Cyan accent
-    const color2 = new THREE.Color('#ffffff') // Soft white
-    const color3 = new THREE.Color('#818cf8') // Indigo accent
+    const colorCyan = new THREE.Color('#38bdf8') // Soft cyan
+    const colorWhite = new THREE.Color('#e2e8f0') // Soft white
+    const colorMuted = new THREE.Color('#64748b') // Muted gray
 
     for (let i = 0; i < count; i++) {
-      // Spread across digital world coordinate space [x: -25..25, y: -55..-20, z: -100..-40]
-      pos[i * 3 + 0] = (random() - 0.5) * 50
-      pos[i * 3 + 1] = -20 - random() * 35
-      pos[i * 3 + 2] = -40 - random() * 60
+      pos[i * 3 + 0] = (random() - 0.5) * 44
+      pos[i * 3 + 1] = -22 - random() * 28
+      pos[i * 3 + 2] = -42 - random() * 52
 
       const randVal = random()
-      const chosenColor = randVal > 0.6 ? color1 : randVal > 0.3 ? color2 : color3
+      const chosenColor = randVal > 0.65 ? colorCyan : randVal > 0.35 ? colorWhite : colorMuted
       col[i * 3 + 0] = chosenColor.r
       col[i * 3 + 1] = chosenColor.g
       col[i * 3 + 2] = chosenColor.b
@@ -42,7 +40,7 @@ export function DataParticles({ count = 600 }: { count?: number }) {
   // Gentle subtle vertical drift
   useFrame((_, delta) => {
     if (pointsRef.current) {
-      pointsRef.current.rotation.y += delta * 0.015
+      pointsRef.current.rotation.y += delta * 0.012
     }
   })
 
@@ -59,10 +57,10 @@ export function DataParticles({ count = 600 }: { count?: number }) {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.06}
+        size={0.045}
         vertexColors
         transparent
-        opacity={0.65}
+        opacity={0.48}
         blending={THREE.AdditiveBlending}
         depthWrite={false}
         sizeAttenuation
