@@ -25,15 +25,16 @@ export function Earth() {
   // Vertical tilt constraints (+/- 30 degrees)
   const maxPitch = THREE.MathUtils.degToRad(30)
 
-  // Steady natural diurnal planetary rotation + smooth drag damping & inertia
-  useFrame((_, delta) => {
+  // Organic, frame-rate independent celestial rotation with long-period micro-variation
+  useFrame(({ clock }, delta) => {
     if (!userRotationGroupRef.current) return
 
     if (!isDragging.current) {
-      // Natural diurnal rotation
-      targetRotation.current.y += delta * 0.02
+      // Natural organic rotation rate (~0.011 rad/s base with subtle long-period variation)
+      const organicSpeed = 0.011 + Math.sin(clock.elapsedTime * 0.05) * 0.0012
+      targetRotation.current.y += delta * organicSpeed
 
-      // Inertia decay with friction
+      // Momentum inertia decay with friction
       targetRotation.current.y += velocity.current.x
       targetRotation.current.x += velocity.current.y
 
@@ -49,7 +50,7 @@ export function Earth() {
     )
 
     // Smooth lerp damping
-    const lerpFactor = Math.min(1, delta * 12)
+    const lerpFactor = Math.min(1, delta * 10)
     currentRotation.current.x = THREE.MathUtils.lerp(
       currentRotation.current.x,
       targetRotation.current.x,

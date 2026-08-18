@@ -7,10 +7,10 @@ export function EarthClouds({ radius = 2.004 }: { radius?: number }) {
   const cloudsRef = useRef<THREE.Mesh>(null!)
   const cloudsMap = useTexture('/textures/earth/earth_clouds.jpg')
 
-  // Smooth independent cloud drift
+  // Smooth independent atmospheric cloud drift (0.016 rad/s delta-time based)
   useFrame((_, delta) => {
     if (cloudsRef.current) {
-      cloudsRef.current.rotation.y += delta * 0.035
+      cloudsRef.current.rotation.y += delta * 0.016
     }
   })
 
