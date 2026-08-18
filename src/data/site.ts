@@ -4,9 +4,9 @@ export interface SiteConfig {
   linkedin: string
 }
 
-// Global Site Configuration & Contact Endpoints (Placeholders ready to replace)
+// Global Site Configuration & Production Contact Endpoints
 export const siteConfig: SiteConfig = {
-  email: 'mailto:kishor@example.com',
-  github: 'https://github.com/example',
-  linkedin: 'https://linkedin.com/in/example',
+  email: 'mailto:mtkishor07@gmail.com',
+  github: 'https://github.com/KISHOR059',
+  linkedin: 'https://linkedin.com/in/kishor-m-567b95297',
 }
