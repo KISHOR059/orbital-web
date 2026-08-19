@@ -19,50 +19,58 @@ The experience blends physically-inspired rendering, custom shaders, cinematic c
 
 ---
 
-## Experience
+## Screenshots
 
-The continuous scroll narrative unfolds across nine distinct stages:
+<div align="center">
 
-```text
-  01 // DEEP SPACE       Floating perspective in the cosmic starfield
-        ↓
-  02 // EARTH            Planetary approach with atmospheric limb glow
-        ↓
-  03 // CONTINENTS       Orbital lateral glide across continental landmasses
-        ↓
-  04 // HUMANITY         Global connection hubs, geodesic flight arcs & city lights
-        ↓
-  05 // EARTH INTERIOR   Geological cross-section revealing Crust & Mantle
-        ↓
-  06 // PLANETARY CORE   Incandescent golden core with physical cutaway separation
-        ↓
-  07 // TECHNOLOGY       Descent into coordinate space, data particles & grid
-        ↓
-  08 // ABOUT KISHOR     Interactive 3D identity construct & engineering focus areas
-        ↓
-  09 // CONTACT          Serene finale with direct communication channels
-```
+### 01 // Deep Space
+*Initial hero perspective floating above Earth in the cosmic starfield.*
 
----
+![01 Deep Space](./docs/screenshots/01-deep-space.png)
 
-## Visual Journey
+<br/>
 
-```text
-+-------------------------------------------------------------------------------+
-|  [01 DEEP SPACE]         [02-04 EARTH & HUMANITY]      [05-06 EARTH INTERIOR] |
-|   .   *   +   .           .---.   .-==-.  _             .---.   //\\\\\\\\\   |
-|     *   .   *            /     \ ( City )  \           /  | /| ( CORE ) \\\\  |
-|   +   .   *   .         | Earth | `-==-'    |         | C |M |  `----'   |||  |
-|       *   +              \     /  ~Arcs~   /           \  | \| (MANTLE) ////  |
-|  Cosmic Starfield         '---'   ~Nodes~ '             '---'   \\\\\\\\\\/   |
-+-------------------------------------------------------------------------------+
-|  [07 TECHNOLOGY SPACE]           [08 ABOUT KISHOR]        [09 CONTACT FINALE] |
-|    +--[ 3D PROJECT CARD ]--+       / \   (O) Rings          [ EMAIL ]         |
-|    | NEXUS OS // SPATIAL   |      | * |  Identity           [ GITHUB ]        |
-|    | WebGL Particle Engine |       \ /   Construct          [ LINKEDIN ]      |
-|    +-----------------------+      FOCUS: Web / 3D / Systems "Let's Build..."  |
-+-------------------------------------------------------------------------------+
-```
+### 02 // Earth Atmosphere
+*Orbital approach with atmospheric Rayleigh scattering and soft limb glow.*
+
+![02 Earth Atmosphere](./docs/screenshots/02-earth-atmosphere.png)
+
+<br/>
+
+### 03 // Humanity & Global Network
+*Continental close-up highlighting global hub nodes, geodesic connection arcs, and city lights.*
+
+![03 Humanity Network](./docs/screenshots/03-humanity-civilization.png)
+
+<br/>
+
+### 04 // Earth Interior & Core
+*Geological cross-section showcasing Crust, Mantle, and radiant incandescent Core.*
+
+![04 Earth Interior](./docs/screenshots/04-earth-interior.png)
+
+<br/>
+
+### 05 // Technology Space
+*Abstract digital plane featuring procedural 3D coordinate grids and volumetric data particles.*
+
+![05 Technology Space](./docs/screenshots/05-technology-space.png)
+
+<br/>
+
+### 06 // Developer Identity & Focus
+*Harmonic 3D wireframe identity construct with orbital rings and core focus areas.*
+
+![06 About Identity](./docs/screenshots/06-about-identity.png)
+
+<br/>
+
+### 07 // Contact Finale
+*Clean minimal closing terminal with direct communication vectors.*
+
+![07 Contact Finale](./docs/screenshots/07-contact-finale.png)
+
+</div>
 
 ---
 
@@ -85,7 +93,7 @@ The continuous scroll narrative unfolds across nine distinct stages:
 - **Interactive Interior Rotation**: Independent drag and touch rotation allowing 360° inspection of internal layers.
 
 ### 🛰️ Scroll-Driven Choreography
-- **GSAP ScrollTrigger Master Timeline**: Seamless, inertial camera path spanning all 9 narrative phases without jarring cuts.
+- **GSAP ScrollTrigger Master Timeline**: Seamless, inertial camera path spanning all narrative phases without jarring cuts.
 - **Dynamic Camera Rig**: Real-time position, target vector, and field-of-view (FOV) interpolation with zero per-frame memory allocations.
 - **Live Mission Telemetry HUD**: Persistent phase counter, coordinates, real-time scroll progress bar, and phase indicators.
 
